@@ -2,6 +2,6 @@ package net.phobot.realestate.contexts.closing.roles
 
 import net.phobot.realestate.contexts.closing._
 
-class NotaryPublic(val entityId: Long, private val repository: Repository) {
+class NotaryPublic(val entityId: Long) {
 
 }

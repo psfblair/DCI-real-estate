@@ -8,19 +8,13 @@ case class PurchaseKey(private val myId: Long) extends RoleKey[Long] {
 
 class ClosingContext {
 
-  def execute(purchaseId: Long, buyerId: Long, sellerId: Long) {
+  // Long -> RoleKey conversions are on object RoleKey
+  def execute(purchaseId: Long, buyerId: Long, sellerId: Long, lenderId: Long) {
     val theCast = for {
-                    buyer <- castBuyer(buyerId, purchaseId)
-                    seller <- castSeller(sellerId, purchaseId)
-                } yield (buyer, seller)
+                    buyer <- Repository.findBuyer(buyerId, purchaseId)
+                    seller <- Repository.findSeller(sellerId, purchaseId)
+                    lender <- Repository.findLender(lenderId, purchaseId)
+                } yield (buyer, seller, lender)
     // Kick it off
-  }
-
-  private def castBuyer(buyerId: Long, purchaseId: Long) : Option[Buyer] = {
-    ClosingRepository.findBuyer(BuyerKey(buyerId), PurchaseKey(purchaseId))
-  }
-
-  private def castSeller(sellerId: Long, purchaseId: Long) : Option[Seller] = {
-    ClosingRepository.findSeller(SellerKey(sellerId), PurchaseKey(purchaseId))
   }
 }

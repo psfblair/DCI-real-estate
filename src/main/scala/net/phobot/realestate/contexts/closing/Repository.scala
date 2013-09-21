@@ -7,6 +7,7 @@ import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
 import net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS
 import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
 import net.phobot.realestate.model.tables.Actorsrepresentatives.ACTORSREPRESENTATIVES
+import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
 import java.sql.DriverManager
 import org.jooq._
 import org.jooq.scala.Conversions._
@@ -18,13 +19,22 @@ import net.phobot.realestate.contexts.closing.roles.SellerKey
 abstract class RoleKey[IdType] {
   def id : IdType
 }
+object RoleKey {
+  implicit def asPurchaseKey(purchaseId: Long): PurchaseKey                         = PurchaseKey(purchaseId)
+  implicit def asBuyerKey(buyerId: Long): BuyerKey                                  = BuyerKey(buyerId)
+  implicit def asSellerKey(sellerId: Long): SellerKey                               = SellerKey(sellerId)
+  implicit def asLenderKey(lenderId: Long): LenderKey                               = LenderKey(lenderId)
+  implicit def asBuyersAttorneyKey(attorneyId: java.lang.Long): BuyersAttorneyKey           = BuyersAttorneyKey(attorneyId)
+  implicit def asSellersAttorneyKey(attorneyId: java.lang.Long): SellersAttorneyKey         = SellersAttorneyKey(attorneyId)
+  implicit def asLendersRepresentativeKey(repId: java.lang.Long): LendersRepresentativeKey  = LendersRepresentativeKey(repId)
+}
 
 case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
    (val table: TableImpl[RecordType],
     val keyField: TableField[RecordType, _ <: Any],
     val key: RoleKey[IdType])
 
-trait Repository {
+object Repository {
   // When done for real, manage exceptions with opening connection, connection pooling, etc.
   Class.forName("org.h2.Driver").newInstance()
   private val connection = DriverManager.getConnection ("jdbc:h2:~/Documents/workspace-IDEA/Scala-RealEstateClosing/test")
@@ -33,6 +43,7 @@ trait Repository {
   implicit def asOption(record : Record): Option[Record] = Option(record)
   implicit def asOption(buyer: Buyer): Option[Buyer] = Option(buyer)
   implicit def asOption(seller: Seller): Option[Seller] = Option(seller)
+  implicit def asOption(lender: Lender): Option[Lender] = Option(lender)
   implicit def asOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
 
   def findBuyer(buyerKey: BuyerKey, purchaseKey: PurchaseKey) : Option[Buyer] = {
@@ -56,6 +67,18 @@ trait Repository {
     ) yield {
       seller.attorney = attorney
       seller
+    }
+  }
+
+  def findLender(lenderKey: LenderKey, purchaseKey: PurchaseKey) : Option[Lender] = {
+    for (
+      actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, lenderKey)) ;
+      name <- findActorName(lenderKey) ;
+      lender <- new Lender(lenderKey, name) ;
+      lenderRepresentative  <- findLenderRepresentative(lender, purchaseKey)
+    ) yield {
+      lender.representedBy = lenderRepresentative
+      lender
     }
   }
 
@@ -89,13 +112,30 @@ trait Repository {
     } yield new SellersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), seller)
   }
 
+  private def findLenderRepresentative(lender: Lender, purchaseKey: PurchaseKey) : Option[LendersRepresentative] = {
+    for {
+      representativeRecord <- findRepresentativeFor(lender.key, purchaseKey)
+    } yield new LendersRepresentative(representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID), lender)
+  }
+
   private def findAttorneyFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
     try{
       (context.select()
-                from(ATTORNEYS)
-                where(ATTORNEYS.REPRESENTATIVE_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID)
-                and(ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id)
-                and(ACTORSREPRESENTATIVES.ACTOR_ID === key.id)
+                from ATTORNEYS
+                where ATTORNEYS.REPRESENTATIVE_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID
+                and ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id
+                and ACTORSREPRESENTATIVES.ACTOR_ID === key.id
+                fetchAny())
+    } catch { case e: Throwable => None }
+  }
+
+  private def findRepresentativeFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
+    try{
+      (context.select()
+                from REPRESENTATIVES
+                where REPRESENTATIVES.ACTOR_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID
+                and ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id
+                and ACTORSREPRESENTATIVES.ACTOR_ID === key.id
                 fetchAny())
     } catch { case e: Throwable => None }
   }
@@ -116,25 +156,6 @@ trait Repository {
                                 fieldIdentifier: TableField[RecordType, ValueType]): AttributeValue[RecordType, ValueType] = {
     AttributeValue(fieldIdentifier, record.getValue(fieldIdentifier))
   }
-
-
-  def representedBy(closingAgent: ClosingAgent) : Option[TitleCompany]
-  def representedBy(representative: LendersRepresentative) : Option[Lender]
-
-  def representativeFor(lender: Lender) : Option[LendersRepresentative]
-  def representativeFor(lender: TitleCompany) : Option[ClosingAgent]
-
-}
-
-object ClosingRepository extends Repository {
-
-  def representedBy(closingAgent: ClosingAgent): Option[TitleCompany] = None
-
-  def representedBy(representative: LendersRepresentative): Option[Lender] = None
-
-  def representativeFor(lender: Lender): Option[LendersRepresentative] = None
-
-  def representativeFor(lender: TitleCompany): Option[ClosingAgent] = None
 }
 
 /* JOOQ broken down:

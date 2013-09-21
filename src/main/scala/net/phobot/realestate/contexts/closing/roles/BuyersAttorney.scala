@@ -1,3 +1,10 @@
 package net.phobot.realestate.contexts.closing.roles
 
-class BuyersAttorney(val entityId: Long, val client: Buyer)
+import net.phobot.realestate.contexts.closing.RoleKey
+
+class BuyersAttorney(val key: BuyersAttorneyKey, val client: Buyer)
+
+case class BuyersAttorneyKey(private val myId: Long) extends RoleKey[Long] {
+  def id = myId
+}
+
