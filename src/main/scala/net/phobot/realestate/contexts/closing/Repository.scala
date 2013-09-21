@@ -6,8 +6,9 @@ import net.phobot.realestate.model.tables.Actors.ACTORS
 import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
 import net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS
 import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
-import net.phobot.realestate.model.tables.Actorsrepresentatives.ACTORSREPRESENTATIVES
+import net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES
 import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
+import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
 import java.sql.DriverManager
 import org.jooq._
 import org.jooq.scala.Conversions._
@@ -24,9 +25,11 @@ object RoleKey {
   implicit def asBuyerKey(buyerId: Long): BuyerKey                                  = BuyerKey(buyerId)
   implicit def asSellerKey(sellerId: Long): SellerKey                               = SellerKey(sellerId)
   implicit def asLenderKey(lenderId: Long): LenderKey                               = LenderKey(lenderId)
-  implicit def asBuyersAttorneyKey(attorneyId: java.lang.Long): BuyersAttorneyKey           = BuyersAttorneyKey(attorneyId)
-  implicit def asSellersAttorneyKey(attorneyId: java.lang.Long): SellersAttorneyKey         = SellersAttorneyKey(attorneyId)
-  implicit def asLendersRepresentativeKey(repId: java.lang.Long): LendersRepresentativeKey  = LendersRepresentativeKey(repId)
+  implicit def asBuyersAttorneyKey(attorneyId: java.lang.Long): BuyersAttorneyKey             = BuyersAttorneyKey(attorneyId)
+  implicit def asSellersAttorneyKey(attorneyId: java.lang.Long): SellersAttorneyKey           = SellersAttorneyKey(attorneyId)
+  implicit def asLendersRepresentativeKey(repId: java.lang.Long): LendersRepresentativeKey    = LendersRepresentativeKey(repId)
+  implicit def asBuyersRealEstateAgentKey(repId: java.lang.Long): BuyersRealEstateAgentKey    = BuyersRealEstateAgentKey(repId)
+  implicit def asSellersRealEstateAgentKey(repId: java.lang.Long): SellersRealEstateAgentKey  = SellersRealEstateAgentKey(repId)
 }
 
 case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
@@ -54,6 +57,7 @@ object Repository {
       attorney <- findBuyerAttorney(buyer, purchaseKey)
     ) yield {
       buyer.attorney = attorney
+      buyer.realEstateAgent = findBuyerRealEstateAgent(buyer, purchaseKey)
       buyer
     }
   }
@@ -66,6 +70,7 @@ object Repository {
       attorney  <- findSellerAttorney(seller, purchaseKey)
     ) yield {
       seller.attorney = attorney
+      seller.realEstateAgent = findSellerRealEstateAgent(seller, purchaseKey)
       seller
     }
   }
@@ -112,30 +117,54 @@ object Repository {
     } yield new SellersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), seller)
   }
 
+  private def findAttorneyFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
+    try{
+      (context.select()
+                from ATTORNEYS
+                where ATTORNEYS.REPRESENTATIVE_ID === ACTORS_REPRESENTATIVES.REPRESENTATIVE_ID
+                and ACTORS_REPRESENTATIVES.PURCHASE_ID === purchaseKey.id
+                and ACTORS_REPRESENTATIVES.ACTOR_ID === key.id
+                fetchAny())
+    } catch { case e: Throwable => None }
+  }
+
+  private def findBuyerRealEstateAgent(buyer: Buyer, purchaseKey: PurchaseKey) : Option[BuyersRealEstateAgent] = {
+    for {
+      realEstateAgentRecord <- findRealEstateAgentFor(buyer.key, purchaseKey)
+    } yield new BuyersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID), buyer)
+  }
+
+  private def findSellerRealEstateAgent(seller: Seller, purchaseKey: PurchaseKey) : Option[SellersRealEstateAgent] = {
+    for {
+      realEstateAgentRecord <- findRealEstateAgentFor(seller.key, purchaseKey)
+    } yield new SellersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID), seller)
+  }
+
+  private def findRealEstateAgentFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
+    try{
+      (context.select()
+                from REAL_ESTATE_AGENTS
+                where REAL_ESTATE_AGENTS.REPRESENTATIVE_ID === ACTORS_REPRESENTATIVES.REPRESENTATIVE_ID
+                and ACTORS_REPRESENTATIVES.PURCHASE_ID === purchaseKey.id
+                and ACTORS_REPRESENTATIVES.ACTOR_ID === key.id
+                fetchAny())
+    } catch { case e: Throwable => None }
+  }
+
+
   private def findLenderRepresentative(lender: Lender, purchaseKey: PurchaseKey) : Option[LendersRepresentative] = {
     for {
       representativeRecord <- findRepresentativeFor(lender.key, purchaseKey)
     } yield new LendersRepresentative(representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID), lender)
   }
 
-  private def findAttorneyFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
-    try{
-      (context.select()
-                from ATTORNEYS
-                where ATTORNEYS.REPRESENTATIVE_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID
-                and ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id
-                and ACTORSREPRESENTATIVES.ACTOR_ID === key.id
-                fetchAny())
-    } catch { case e: Throwable => None }
-  }
-
   private def findRepresentativeFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
     try{
       (context.select()
                 from REPRESENTATIVES
-                where REPRESENTATIVES.ACTOR_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID
-                and ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id
-                and ACTORSREPRESENTATIVES.ACTOR_ID === key.id
+                where REPRESENTATIVES.ACTOR_ID === ACTORS_REPRESENTATIVES.REPRESENTATIVE_ID
+                and ACTORS_REPRESENTATIVES.PURCHASE_ID === purchaseKey.id
+                and ACTORS_REPRESENTATIVES.ACTOR_ID === key.id
                 fetchAny())
     } catch { case e: Throwable => None }
   }

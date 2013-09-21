@@ -1,15 +1,18 @@
 package net.phobot.realestate.contexts.closing.roles
 
+import net.phobot.realestate.util.OptionExtensions._
 import net.phobot.realestate.contexts.closing._
 import net.phobot.realestate.contexts.closing.roles.attributes._
 
 class Seller(val key: SellerKey, name: Name) {
-  private var _attorney = null: SellersAttorney
+  private var _attorney: Option[SellersAttorney] = None
+  private var _realEstateAgent: Option[SellersRealEstateAgent] = None
 
-  def attorney_= (sellersAttorney: SellersAttorney) : Unit = {
-    if (_attorney eq null) _attorney = sellersAttorney else throw new IllegalStateException
-  }
-  def attorney = if (_attorney eq null) throw new IllegalStateException else _attorney
+  def attorney_= (sellersAttorney: SellersAttorney) = { _attorney = _attorney.setOnlyOnce(sellersAttorney) }
+  def attorney = _attorney match { case Some(atty) => atty; case None => throw new IllegalStateException }
+
+  def realEstateAgent_= (agent: Option[SellersRealEstateAgent]) : Unit = { _realEstateAgent = agent }
+  def realEstateAgent = _realEstateAgent
 
   def fullName = name.fullName
 }

@@ -19,14 +19,19 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Actors ACTORS = net.phobot.realestate.model.tables.Actors.ACTORS;
 
 	/**
+	 * The table PUBLIC.REAL_ESTATE_AGENTS
+	 */
+	public static final net.phobot.realestate.model.tables.RealEstateAgents REAL_ESTATE_AGENTS = net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS;
+
+	/**
 	 * The table PUBLIC.CONTACTS
 	 */
 	public static final net.phobot.realestate.model.tables.Contacts CONTACTS = net.phobot.realestate.model.tables.Contacts.CONTACTS;
 
 	/**
-	 * The table PUBLIC.ACTORSREPRESENTATIVES
+	 * The table PUBLIC.ACTORS_REPRESENTATIVES
 	 */
-	public static final net.phobot.realestate.model.tables.Actorsrepresentatives ACTORSREPRESENTATIVES = net.phobot.realestate.model.tables.Actorsrepresentatives.ACTORSREPRESENTATIVES;
+	public static final net.phobot.realestate.model.tables.ActorsRepresentatives ACTORS_REPRESENTATIVES = net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES;
 
 	/**
 	 * The table PUBLIC.REPRESENTATIVES
