@@ -14,7 +14,6 @@ import org.jooq.impl.{UpdatableRecordImpl, TableImpl, DSL}
 import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, AttributeValue, OrganizationName, IndividualName}
 import net.phobot.realestate.contexts.closing.roles.BuyerKey
 import net.phobot.realestate.contexts.closing.roles.SellerKey
-import net.phobot.realestate.model.tables.Individuals
 
 abstract class RoleKey[IdType] {
   def id : IdType
