@@ -1,7 +1,6 @@
 package net.phobot.realestate.contexts.closing
 
 import net.phobot.realestate.contexts.closing.roles._
-import net.phobot.realestate.model._
 
 class ClosingContext {
 //  val repository = new Object with Repository {
@@ -20,13 +19,11 @@ class ClosingContext {
   }
 
   private def castBuyer(buyerId: Long) : Option[Buyer] = {
-    ClosingRepository.find[Buyer, BuyerKey](new BuyerKey(buyerId))
-    None
+    ClosingRepository.find(new BuyerKey(buyerId))
   }
 
   private def castSeller(sellerId: Long) : Option[Seller] = {
-    ClosingRepository.find[Seller, SellerKey](new SellerKey(sellerId))
-    None
+    ClosingRepository.find(new SellerKey(sellerId))
   }
 
 

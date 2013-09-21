@@ -7,4 +7,4 @@ class Seller(val key: SellerKey) {
   def attorney = { ClosingRepository.attorneyFor(key) }
 }
 
-case class SellerKey(val id: Long)
+case class SellerKey(val myId: Long) extends RoleKey[Long](myId)

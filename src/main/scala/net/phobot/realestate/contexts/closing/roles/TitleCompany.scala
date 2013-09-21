@@ -1,7 +1,7 @@
 package net.phobot.realestate.contexts.closing.roles
 
-import net.phobot.realestate.contexts.closing.Repository
+import net.phobot.realestate.contexts.closing.ClosingRepository
 
-class TitleCompany(val entityId: Long, private val repository: Repository) {
-  def representedBy : ClosingAgent = { repository.representativeFor(this) }
+class TitleCompany(val entityId: Long) {
+  def representedBy : Option[ClosingAgent] = { ClosingRepository.representativeFor(this) }
 }
