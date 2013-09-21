@@ -1,100 +1,123 @@
 package net.phobot.realestate.contexts.closing
 
-import _root_.scala.collection.JavaConversions
+import _root_.scala.Some
 import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.model.tables.Actors.ACTORS
 import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
 import net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS
+import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
+import net.phobot.realestate.model.tables.Actorsrepresentatives.ACTORSREPRESENTATIVES
 import java.sql.DriverManager
 import org.jooq._
 import org.jooq.scala.Conversions._
 import org.jooq.impl.{UpdatableRecordImpl, TableImpl, DSL}
+import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, AttributeValue, OrganizationName, IndividualName}
 import net.phobot.realestate.contexts.closing.roles.BuyerKey
 import net.phobot.realestate.contexts.closing.roles.SellerKey
-import net.phobot.realestate.contexts.closing.roles.attributes.Name
+import net.phobot.realestate.model.tables.Individuals
 
-abstract class RoleKey[IdType](val id: IdType)
+abstract class RoleKey[IdType] {
+  def id : IdType
+}
+
+case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
+   (val table: TableImpl[RecordType],
+    val keyField: TableField[RecordType, _ <: Any],
+    val key: RoleKey[IdType])
 
 trait Repository {
   // When done for real, manage exceptions with opening connection, connection pooling, etc.
   Class.forName("org.h2.Driver").newInstance()
   private val connection = DriverManager.getConnection ("jdbc:h2:~/Documents/workspace-IDEA/Scala-RealEstateClosing/test")
   private val context = DSL.using(connection, SQLDialect.H2)
-  private var entities : Map[RoleKey[_], Record] = Map()
-  private def addToCache[IdType](aKey: RoleKey[IdType]) (record: Record) = { entities += aKey -> record ; record }
 
   implicit def asOption(record : Record): Option[Record] = Option(record)
+  implicit def asOption(buyer: Buyer): Option[Buyer] = Option(buyer)
+  implicit def asOption(seller: Seller): Option[Seller] = Option(seller)
+  implicit def asOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
 
-  def find(key: BuyerKey) : Option[Buyer] = {
-
-    val actorRecord: Option[Record] <- findRecordForEntity(ACTORS, ACTORS.ACTOR_ID, key, ACTORS.ACTOR_ID)
-    actorRecord match {
-      case None => None
-      case Some(record) =>
-        val individualRecord: Option[Record] = findRecordForEntity(INDIVIDUALS, INDIVIDUALS.ACTOR_ID, key,
-                                                                   INDIVIDUALS.FIRST_NAME, INDIVIDUALS.LAST_NAME)
-        individualRecord match {
-          case Some(record) => new Name(record.getValue(INDIVIDUALS.FIRST_NAME), record.getValue(INDIVIDUALS.LAST_NAME))
-          case None => findRecordForEntity( ORGANIZATIONS,
-                                                  ORGANIZATIONS.ACTOR_ID,
-                                                  key,
-                                                  ORGANIZATIONS.ACTOR_ID, ORGANIZATIONS.NAME)
-        }
-
-
+  def findBuyer(buyerKey: BuyerKey, purchaseKey: PurchaseKey) : Option[Buyer] = {
+    for (
+      actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, buyerKey)) ;
+      name <- findActorName(buyerKey) ;
+      buyer <- new Buyer(buyerKey, name) ;
+      attorney <- findBuyerAttorney(buyer, purchaseKey)
+    ) yield {
+      buyer.attorney = attorney
+      buyer
     }
-
-    )
-    match  {
-      case None => None
-      case Some(record) =>
-    }
-
-    val individualInfo: Option[Record] =
-
-    individualInfo match {
-      case None => findRecordForEntity( ORGANIZATIONS,
-                                        ORGANIZATIONS.ACTOR_ID,
-                                        key,
-                                        ORGANIZATIONS.ACTOR_ID, ORGANIZATIONS.NAME)
-      case _ => None // Merge buyer with individual info adapter, merge db record in cache
-    }
-
-    buyer
   }
 
-  def find(key: SellerKey) : Option[Seller] = {
-    val createSeller = (record: Record) => new Seller(key)
-    findRecordForEntity(ACTORS, ACTORS.ACTOR_ID, key, ACTORS.ACTOR_ID) map (addToCache(key _) andThen createSeller)
+  def findSeller(sellerKey: SellerKey, purchaseKey: PurchaseKey) : Option[Seller] = {
+    for (
+      actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, sellerKey)) ;
+      name <- findActorName(sellerKey) ;
+      seller <- new Seller(sellerKey, name) ;
+      attorney  <- findSellerAttorney(seller, purchaseKey)
+    ) yield {
+      seller.attorney = attorney
+      seller
+    }
   }
 
-  def findRecordForEntity[RecordType <: UpdatableRecordImpl, IdType]( table: TableImpl[RecordType],
-                                                                      keyField: TableField[RecordType, IdType],
-                                                                      key: RoleKey[IdType],
-                                                                      fields: (_ <: Field[_])*) : Option[Record] = {
-    val javaFieldCollection = JavaConversions.asJavaCollection(fields)
+  private def findActorName[IdType](key: RoleKey[IdType]): Option[NameAttribute] = {
+    val individualRecordId = RecordIdentifier(INDIVIDUALS, INDIVIDUALS.ACTOR_ID, key)
+    val individualName = for (
+      individual: Record <- findRecordForEntity(individualRecordId) ;
+      firstNameField <- attributeValueFor(individual, INDIVIDUALS.FIRST_NAME) ;
+      lastNameField <- attributeValueFor(individual, INDIVIDUALS.LAST_NAME)
+    ) yield new IndividualName(individualRecordId, firstNameField, lastNameField)
+
+    val organizationRecordId = RecordIdentifier(ORGANIZATIONS, ORGANIZATIONS.ACTOR_ID, key)
+    val organizationName = for (
+      individualNotFound <- individualName match { case None => Some(true); case Some(_) => None };
+      organization <- findRecordForEntity(organizationRecordId) ;
+      organizationNameField <- attributeValueFor(organization, ORGANIZATIONS.NAME)
+    ) yield new OrganizationName(organizationRecordId, organizationNameField)
+
+    List(individualName, organizationName) filter (x => x.isDefined) head
+  }
+
+  private def findBuyerAttorney(buyer: Buyer, purchaseKey: PurchaseKey) : Option[BuyersAttorney] = {
+    for {
+      attorneyRecord <- findAttorneyFor(buyer.key, purchaseKey)
+    } yield new BuyersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), buyer)
+  }
+
+  private def findSellerAttorney(seller: Seller, purchaseKey: PurchaseKey) : Option[SellersAttorney] = {
+    for {
+      attorneyRecord <- findAttorneyFor(seller.key, purchaseKey)
+    } yield new SellersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), seller)
+  }
+
+  private def findAttorneyFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
+    try{
+      (context.select()
+                from(ATTORNEYS)
+                where(ATTORNEYS.REPRESENTATIVE_ID === ACTORSREPRESENTATIVES.REPRESENTATIVE_ID)
+                and(ACTORSREPRESENTATIVES.PURCHASE_ID === purchaseKey.id)
+                and(ACTORSREPRESENTATIVES.ACTOR_ID === key.id)
+                fetchAny())
+    } catch { case e: Throwable => None }
+  }
+
+  private def findRecordForEntity[RecordType <: UpdatableRecordImpl[RecordType], IdType]
+                (recordIdentifier: RecordIdentifier[RecordType, IdType]): Option[Record] = {
+    val fieldIdentifier = recordIdentifier.keyField.asInstanceOf[TableField[RecordType, IdType]] //GRRR
     try {
       // Implicit conversion to Option in asOption above
-      val result: Option[Record] = context select (javaFieldCollection) from table where keyField === key.id fetchOne()
-      result match {
-        case None => None
-        case Some(record) => addToCache(key)(record); result
-      }
+      context select () from recordIdentifier.table where fieldIdentifier === recordIdentifier.key.id fetchOne()
     } catch {
-      case e => None
+      case e: Throwable => None
     }
   }
 
-  def nameFor(aBuyer: BuyerKey) : Option[Name[String]]
-  def nameFor(aSeller: SellerKey) : Option[Name[String]]
+  private def attributeValueFor[RecordType <: UpdatableRecordImpl[RecordType], ValueType]
+                               (record: Record,
+                                fieldIdentifier: TableField[RecordType, ValueType]): AttributeValue[RecordType, ValueType] = {
+    AttributeValue(fieldIdentifier, record.getValue(fieldIdentifier))
+  }
 
-  def attorneyFor(aBuyer: BuyerKey) : Option[BuyersAttorney]
-  def attorneyFor(aSeller: SellerKey) : Option[SellersAttorney]
-
-  def clientFor(attorney: BuyersAttorney) : Option[Buyer]
-  def clientFor(attorney: SellersAttorney) : Option[Seller]
-  def clientFor(realEstateAgent: BuyersRealEstateAgent) : Option[Buyer]
-  def clientFor(realEstateAgent: SellersRealEstateAgent) : Option[Seller]
 
   def representedBy(closingAgent: ClosingAgent) : Option[TitleCompany]
   def representedBy(representative: LendersRepresentative) : Option[Lender]
@@ -105,21 +128,6 @@ trait Repository {
 }
 
 object ClosingRepository extends Repository {
-  def nameFor(aBuyer: BuyerKey): Option[Name[String]] = None
-
-  def nameFor(aSeller: SellerKey): Option[Name[String]] = None
-
-  def attorneyFor(aBuyer: BuyerKey): Option[BuyersAttorney] = None
-
-  def attorneyFor(aSeller: SellerKey): Option[SellersAttorney] = None
-
-  def clientFor(attorney: BuyersAttorney): Option[Buyer] = None
-
-  def clientFor(attorney: SellersAttorney): Option[Seller] = None
-
-  def clientFor(realEstateAgent: BuyersRealEstateAgent): Option[Buyer] = None
-
-  def clientFor(realEstateAgent: SellersRealEstateAgent): Option[Seller] = None
 
   def representedBy(closingAgent: ClosingAgent): Option[TitleCompany] = None
 

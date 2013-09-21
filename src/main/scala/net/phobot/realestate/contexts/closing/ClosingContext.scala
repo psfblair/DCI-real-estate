@@ -2,39 +2,25 @@ package net.phobot.realestate.contexts.closing
 
 import net.phobot.realestate.contexts.closing.roles._
 
-class ClosingContext {
-//  val repository = new Object with Repository {
-//    def find[EntityType <: Entity, IdType](id: IdType) : Option[EntityType] = { None }
-//    def find[EntityType <: Entity, RoleType, IdType](id: IdType) : Option[RoleType] = { None }
-//  }
+case class PurchaseKey(private val myId: Long) extends RoleKey[Long] {
+  def id = myId
+}
 
-  def execute(buyerId: Int, sellerId: Int) {
+class ClosingContext {
+
+  def execute(purchaseId: Long, buyerId: Long, sellerId: Long) {
     val theCast = for {
-                    buyer <- castBuyer(buyerId)
-                    buyerAttorney <- castBuyerAttorney(buyer)
-                    seller <- castSeller(sellerId)
-                    sellerAttorney <- castSellerAttorney(seller)
-                } yield (buyer, seller, buyerAttorney, sellerAttorney)
+                    buyer <- castBuyer(buyerId, purchaseId)
+                    seller <- castSeller(sellerId, purchaseId)
+                } yield (buyer, seller)
     // Kick it off
   }
 
-  private def castBuyer(buyerId: Long) : Option[Buyer] = {
-    ClosingRepository.find(new BuyerKey(buyerId))
+  private def castBuyer(buyerId: Long, purchaseId: Long) : Option[Buyer] = {
+    ClosingRepository.findBuyer(BuyerKey(buyerId), PurchaseKey(purchaseId))
   }
 
-  private def castSeller(sellerId: Long) : Option[Seller] = {
-    ClosingRepository.find(new SellerKey(sellerId))
+  private def castSeller(sellerId: Long, purchaseId: Long) : Option[Seller] = {
+    ClosingRepository.findSeller(SellerKey(sellerId), PurchaseKey(purchaseId))
   }
-
-
-  private def castBuyerAttorney(buyer: Buyer[Actor]) : Option[BuyersAttorney[Attorney]] = {
-//    repository.find[Attorney, BuyersAttorney, Long](buyer.attorney)
-    None
-  }
-
-  private def castSellerAttorney(seller: Seller[Actor]) : Option[SellersAttorney[Attorney]] = {
-//    repository.find[Attorney, SellersAttorney, Long](seller.attorney)
-    None
-  }
-
 }
