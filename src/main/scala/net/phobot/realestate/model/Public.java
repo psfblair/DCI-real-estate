@@ -11,7 +11,7 @@ package net.phobot.realestate.model;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = 402915934;
+	private static final long serialVersionUID = -1456356938;
 
 	/**
 	 * The singleton instance of <code>PUBLIC</code>
@@ -54,6 +54,7 @@ public class Public extends org.jooq.impl.SchemaImpl {
 			net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS,
 			net.phobot.realestate.model.tables.Individuals.INDIVIDUALS,
 			net.phobot.realestate.model.tables.Purchases.PURCHASES,
+			net.phobot.realestate.model.tables.Notaries.NOTARIES,
 			net.phobot.realestate.model.tables.Attorneys.ATTORNEYS,
 			net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES);
 	}

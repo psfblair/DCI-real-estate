@@ -54,6 +54,11 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Purchases PURCHASES = net.phobot.realestate.model.tables.Purchases.PURCHASES;
 
 	/**
+	 * The table PUBLIC.NOTARIES
+	 */
+	public static final net.phobot.realestate.model.tables.Notaries NOTARIES = net.phobot.realestate.model.tables.Notaries.NOTARIES;
+
+	/**
 	 * The table PUBLIC.ATTORNEYS
 	 */
 	public static final net.phobot.realestate.model.tables.Attorneys ATTORNEYS = net.phobot.realestate.model.tables.Attorneys.ATTORNEYS;

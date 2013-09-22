@@ -1,6 +1,9 @@
 package net.phobot.realestate.contexts.closing
 
-import _root_.scala.Some
+import scala.language.implicitConversions
+import scala.language.postfixOps
+import scala.language.existentials
+
 import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.model.tables.Actors.ACTORS
 import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
@@ -9,6 +12,7 @@ import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
 import net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES
 import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
 import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
+import net.phobot.realestate.model.tables.Notaries.NOTARIES
 import java.sql.DriverManager
 import org.jooq._
 import org.jooq.scala.Conversions._
@@ -16,20 +20,36 @@ import org.jooq.impl.{UpdatableRecordImpl, TableImpl, DSL}
 import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, AttributeValue, OrganizationName, IndividualName}
 import net.phobot.realestate.contexts.closing.roles.BuyerKey
 import net.phobot.realestate.contexts.closing.roles.SellerKey
+import net.phobot.realestate.contexts.closing.RoleKeyConversions._
+import net.phobot.realestate.contexts.closing.DatabaseResultConversions._
 
 abstract class RoleKey[IdType] {
   def id : IdType
 }
-object RoleKey {
+object RoleKeyConversions {
   implicit def asPurchaseKey(purchaseId: Long): PurchaseKey                         = PurchaseKey(purchaseId)
   implicit def asBuyerKey(buyerId: Long): BuyerKey                                  = BuyerKey(buyerId)
   implicit def asSellerKey(sellerId: Long): SellerKey                               = SellerKey(sellerId)
   implicit def asLenderKey(lenderId: Long): LenderKey                               = LenderKey(lenderId)
+  implicit def asTitleCompanyKey(companyId: Long): TitleCompanyKey                  = TitleCompanyKey(companyId)
+  implicit def asNotaryPublicKey(notaryId: Long): NotaryPublicKey                   = NotaryPublicKey(notaryId)
+
   implicit def asBuyersAttorneyKey(attorneyId: java.lang.Long): BuyersAttorneyKey             = BuyersAttorneyKey(attorneyId)
   implicit def asSellersAttorneyKey(attorneyId: java.lang.Long): SellersAttorneyKey           = SellersAttorneyKey(attorneyId)
-  implicit def asLendersRepresentativeKey(repId: java.lang.Long): LendersRepresentativeKey    = LendersRepresentativeKey(repId)
   implicit def asBuyersRealEstateAgentKey(repId: java.lang.Long): BuyersRealEstateAgentKey    = BuyersRealEstateAgentKey(repId)
   implicit def asSellersRealEstateAgentKey(repId: java.lang.Long): SellersRealEstateAgentKey  = SellersRealEstateAgentKey(repId)
+  implicit def asLendersRepresentativeKey(repId: java.lang.Long): LendersRepresentativeKey    = LendersRepresentativeKey(repId)
+  implicit def asClosingAgentKey(repId: java.lang.Long): ClosingAgentKey                      = ClosingAgentKey(repId)
+}
+
+object DatabaseResultConversions {
+  implicit def asOption(record : Record): Option[Record] = Option(record)
+  implicit def asOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
+
+  implicit def asOption(buyer: Buyer): Option[Buyer] = Option(buyer)
+  implicit def asOption(seller: Seller): Option[Seller] = Option(seller)
+  implicit def asOption(lender: Lender): Option[Lender] = Option(lender)
+  implicit def asOption(company: TitleCompany): Option[TitleCompany] = Option(company)
 }
 
 case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
@@ -42,12 +62,6 @@ object Repository {
   Class.forName("org.h2.Driver").newInstance()
   private val connection = DriverManager.getConnection ("jdbc:h2:~/Documents/workspace-IDEA/Scala-RealEstateClosing/test")
   private val context = DSL.using(connection, SQLDialect.H2)
-
-  implicit def asOption(record : Record): Option[Record] = Option(record)
-  implicit def asOption(buyer: Buyer): Option[Buyer] = Option(buyer)
-  implicit def asOption(seller: Seller): Option[Seller] = Option(seller)
-  implicit def asOption(lender: Lender): Option[Lender] = Option(lender)
-  implicit def asOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
 
   def findBuyer(buyerKey: BuyerKey, purchaseKey: PurchaseKey) : Option[Buyer] = {
     for (
@@ -85,6 +99,25 @@ object Repository {
       lender.representedBy = lenderRepresentative
       lender
     }
+  }
+
+  def findTitleCompany(titleCompanyKey: TitleCompanyKey, purchaseKey: PurchaseKey) : Option[TitleCompany] = {
+    for (
+      actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, titleCompanyKey)) ;
+      name <- findActorName(titleCompanyKey) ;
+      titleCompany <- new TitleCompany(titleCompanyKey, name) ;
+      closingAgent  <- findClosingAgent(titleCompany, purchaseKey)
+    ) yield {
+      titleCompany.representedBy = closingAgent
+      titleCompany
+    }
+  }
+
+  def findNotary(notaryPublicKey: NotaryPublicKey) : Option[NotaryPublic] = {
+    for (
+        actor <- findRecordForEntity(RecordIdentifier(NOTARIES, NOTARIES.INDIVIDUAL_ID, notaryPublicKey)) ;
+        name <- findActorName(notaryPublicKey)
+    ) yield new NotaryPublic(notaryPublicKey, name)
   }
 
   private def findActorName[IdType](key: RoleKey[IdType]): Option[NameAttribute] = {
@@ -151,11 +184,16 @@ object Repository {
     } catch { case e: Throwable => None }
   }
 
-
   private def findLenderRepresentative(lender: Lender, purchaseKey: PurchaseKey) : Option[LendersRepresentative] = {
     for {
       representativeRecord <- findRepresentativeFor(lender.key, purchaseKey)
     } yield new LendersRepresentative(representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID), lender)
+  }
+
+  private def findClosingAgent(titleCompany: TitleCompany, purchaseKey: PurchaseKey) : Option[ClosingAgent] = {
+    for {
+      representativeRecord <- findRepresentativeFor(titleCompany.key, purchaseKey)
+    } yield new ClosingAgent(representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID), titleCompany)
   }
 
   private def findRepresentativeFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {

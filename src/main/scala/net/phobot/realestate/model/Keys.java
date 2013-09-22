@@ -30,6 +30,7 @@ public class Keys {
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_3C = UniqueKeys0.CONSTRAINT_3C;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_2 = UniqueKeys0.CONSTRAINT_2;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_3B = UniqueKeys0.CONSTRAINT_3B;
+	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.NotariesRecord> CONSTRAINT_8C = UniqueKeys0.CONSTRAINT_8C;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord> CONSTRAINT_A2 = UniqueKeys0.CONSTRAINT_A2;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> CONSTRAINT_8A = UniqueKeys0.CONSTRAINT_8A;
 
@@ -45,6 +46,7 @@ public class Keys {
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.RepresentativesRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_6 = ForeignKeys0.CONSTRAINT_6;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.OrganizationsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_D = ForeignKeys0.CONSTRAINT_D;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.IndividualsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_1 = ForeignKeys0.CONSTRAINT_1;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.NotariesRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_8CB = ForeignKeys0.CONSTRAINT_8CB;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, net.phobot.realestate.model.tables.records.RepresentativesRecord> CONSTRAINT_A = ForeignKeys0.CONSTRAINT_A;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_8 = ForeignKeys0.CONSTRAINT_8;
 
@@ -63,6 +65,7 @@ public class Keys {
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_3C = createUniqueKey(net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS, net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS.ACTOR_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_2 = createUniqueKey(net.phobot.realestate.model.tables.Individuals.INDIVIDUALS, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS.ACTOR_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_3B = createUniqueKey(net.phobot.realestate.model.tables.Purchases.PURCHASES, net.phobot.realestate.model.tables.Purchases.PURCHASES.PURCHASE_ID);
+		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.NotariesRecord> CONSTRAINT_8C = createUniqueKey(net.phobot.realestate.model.tables.Notaries.NOTARIES, net.phobot.realestate.model.tables.Notaries.NOTARIES.INDIVIDUAL_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord> CONSTRAINT_A2 = createUniqueKey(net.phobot.realestate.model.tables.Attorneys.ATTORNEYS, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS.REPRESENTATIVE_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> CONSTRAINT_8A = createUniqueKey(net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES.ORGANIZATION_ID);
 	}
@@ -76,6 +79,7 @@ public class Keys {
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.RepresentativesRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_6 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES, net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES.ACTOR_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.OrganizationsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_D = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS, net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS.ACTOR_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.IndividualsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_1 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS.ACTOR_ID);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.NotariesRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_8CB = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_2, net.phobot.realestate.model.tables.Notaries.NOTARIES, net.phobot.realestate.model.tables.Notaries.NOTARIES.INDIVIDUAL_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, net.phobot.realestate.model.tables.records.RepresentativesRecord> CONSTRAINT_A = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_6A, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS.REPRESENTATIVE_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_8 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3C, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES.ORGANIZATION_ID);
 	}
