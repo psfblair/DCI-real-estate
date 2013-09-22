@@ -342,13 +342,7 @@
       <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
       <primary-key name="CONSTRAINT_2" columns="ACTOR_ID"/>
       <foreign-key name="CONSTRAINT_1" columns="ACTOR_ID" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
-      <exported-key name="CONSTRAINT_8CB" table="NOTARIES" schema="PUBLIC" catalog="TEST" columns="INDIVIDUAL_ID"/>
       <index name="CONSTRAINT_1_INDEX_E" unique="false" columns="ACTOR_ID"/>
-    </table>
-    <table name="NOTARIES" schema="PUBLIC" catalog="TEST" type="TABLE">
-      <column name="INDIVIDUAL_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
-      <primary-key name="CONSTRAINT_8C" columns="INDIVIDUAL_ID"/>
-      <foreign-key name="CONSTRAINT_8CB" columns="INDIVIDUAL_ID" ref-table="INDIVIDUALS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
     </table>
     <table name="ORGANIZATIONS" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="NAME" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12"/>

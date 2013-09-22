@@ -2,6 +2,7 @@ package net.phobot.realestate.contexts.closing.roles
 
 import net.phobot.realestate.contexts.closing._
 import net.phobot.realestate.contexts.closing.roles.attributes.Name
+import net.phobot.realestate.dataaccess.RoleKey
 
 class Lender(val key: LenderKey, name: Name) {
   private var _representedBy = null: LendersRepresentative

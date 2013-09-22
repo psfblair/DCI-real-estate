@@ -1,6 +1,6 @@
 package net.phobot.realestate.contexts.closing.roles
 
-import net.phobot.realestate.contexts.closing.RoleKey
+import net.phobot.realestate.dataaccess.RoleKey
 
 class BuyersAttorney(val key: BuyersAttorneyKey, val client: Buyer)
 

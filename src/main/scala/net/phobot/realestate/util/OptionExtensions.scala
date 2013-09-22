@@ -1,5 +1,7 @@
 package net.phobot.realestate.util
 
+import scala.language.implicitConversions
+
 class OptionExtensions[OptionType](val option: Option[OptionType]) {
 
   def setOnlyOnce[T <: AnyRef](value: T) : Option[T] = option match {

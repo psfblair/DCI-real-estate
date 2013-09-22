@@ -1,6 +1,6 @@
 package net.phobot.realestate.contexts.closing.roles.attributes
-import net.phobot.realestate.contexts.closing.RecordIdentifier
 import org.jooq.impl.UpdatableRecordImpl
+import net.phobot.realestate.dataaccess.{AttributeValue, RecordIdentifier}
 
 abstract class Name {
   def fullName : String

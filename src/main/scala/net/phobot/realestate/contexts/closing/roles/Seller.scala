@@ -3,6 +3,7 @@ package net.phobot.realestate.contexts.closing.roles
 import net.phobot.realestate.util.OptionExtensions._
 import net.phobot.realestate.contexts.closing._
 import net.phobot.realestate.contexts.closing.roles.attributes._
+import net.phobot.realestate.dataaccess.RoleKey
 
 class Seller(val key: SellerKey, name: Name) {
   private var _attorney: Option[SellersAttorney] = None

@@ -1,4 +1,4 @@
-package net.phobot.realestate.contexts.closing.roles.attributes
+package net.phobot.realestate.dataaccess
 
 import org.jooq.{Record, TableField}
 

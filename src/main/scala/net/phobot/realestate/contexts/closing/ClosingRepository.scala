@@ -2,7 +2,9 @@ package net.phobot.realestate.contexts.closing
 
 import scala.language.implicitConversions
 import scala.language.postfixOps
-import scala.language.existentials
+
+import org.jooq._
+import org.jooq.scala.Conversions._
 
 import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.model.tables.Actors.ACTORS
@@ -12,27 +14,30 @@ import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
 import net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES
 import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
 import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
-import net.phobot.realestate.model.tables.Notaries.NOTARIES
-import java.sql.DriverManager
-import org.jooq._
-import org.jooq.scala.Conversions._
-import org.jooq.impl.{UpdatableRecordImpl, TableImpl, DSL}
-import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, AttributeValue, OrganizationName, IndividualName}
+import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute}
+import net.phobot.realestate.dataaccess._
+import net.phobot.realestate.contexts.closing.roles.TitleCompanyKey
+import net.phobot.realestate.contexts.closing.roles.attributes.IndividualName
+import net.phobot.realestate.contexts.closing.roles.LenderKey
+import net.phobot.realestate.contexts.closing.roles.attributes.OrganizationName
 import net.phobot.realestate.contexts.closing.roles.BuyerKey
 import net.phobot.realestate.contexts.closing.roles.SellerKey
-import net.phobot.realestate.contexts.closing.RoleKeyConversions._
-import net.phobot.realestate.contexts.closing.DatabaseResultConversions._
 
-abstract class RoleKey[IdType] {
-  def id : IdType
+import ClosingRoleKeyConversions._
+
+object ClosingRoleConversions {
+  implicit def buyerAsOption(buyer: Buyer): Option[Buyer] = Option(buyer)
+  implicit def sellerAsOption(seller: Seller): Option[Seller] = Option(seller)
+  implicit def lenderAsOption(lender: Lender): Option[Lender] = Option(lender)
+  implicit def titleCompanyAsOption(company: TitleCompany): Option[TitleCompany] = Option(company)
 }
-object RoleKeyConversions {
+
+object ClosingRoleKeyConversions {
   implicit def asPurchaseKey(purchaseId: Long): PurchaseKey                         = PurchaseKey(purchaseId)
   implicit def asBuyerKey(buyerId: Long): BuyerKey                                  = BuyerKey(buyerId)
   implicit def asSellerKey(sellerId: Long): SellerKey                               = SellerKey(sellerId)
   implicit def asLenderKey(lenderId: Long): LenderKey                               = LenderKey(lenderId)
   implicit def asTitleCompanyKey(companyId: Long): TitleCompanyKey                  = TitleCompanyKey(companyId)
-  implicit def asNotaryPublicKey(notaryId: Long): NotaryPublicKey                   = NotaryPublicKey(notaryId)
 
   implicit def asBuyersAttorneyKey(attorneyId: java.lang.Long): BuyersAttorneyKey             = BuyersAttorneyKey(attorneyId)
   implicit def asSellersAttorneyKey(attorneyId: java.lang.Long): SellersAttorneyKey           = SellersAttorneyKey(attorneyId)
@@ -42,32 +47,15 @@ object RoleKeyConversions {
   implicit def asClosingAgentKey(repId: java.lang.Long): ClosingAgentKey                      = ClosingAgentKey(repId)
 }
 
-object DatabaseResultConversions {
-  implicit def asOption(record : Record): Option[Record] = Option(record)
-  implicit def asOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
-
-  implicit def asOption(buyer: Buyer): Option[Buyer] = Option(buyer)
-  implicit def asOption(seller: Seller): Option[Seller] = Option(seller)
-  implicit def asOption(lender: Lender): Option[Lender] = Option(lender)
-  implicit def asOption(company: TitleCompany): Option[TitleCompany] = Option(company)
-}
-
-case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
-   (val table: TableImpl[RecordType],
-    val keyField: TableField[RecordType, _ <: Any],
-    val key: RoleKey[IdType])
-
-object Repository {
-  // When done for real, manage exceptions with opening connection, connection pooling, etc.
-  Class.forName("org.h2.Driver").newInstance()
-  private val connection = DriverManager.getConnection ("jdbc:h2:~/Documents/workspace-IDEA/Scala-RealEstateClosing/test")
-  private val context = DSL.using(connection, SQLDialect.H2)
+object ClosingRepository extends Repository {
+  import DatabaseResultConversions._
+  import ClosingRoleConversions._
 
   def findBuyer(buyerKey: BuyerKey, purchaseKey: PurchaseKey) : Option[Buyer] = {
     for (
       actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, buyerKey)) ;
       name <- findActorName(buyerKey) ;
-      buyer <- new Buyer(buyerKey, name) ;
+      buyer <- new Buyer(buyerKey, name);
       attorney <- findBuyerAttorney(buyer, purchaseKey)
     ) yield {
       buyer.attorney = attorney
@@ -111,13 +99,6 @@ object Repository {
       titleCompany.representedBy = closingAgent
       titleCompany
     }
-  }
-
-  def findNotary(notaryPublicKey: NotaryPublicKey) : Option[NotaryPublic] = {
-    for (
-        actor <- findRecordForEntity(RecordIdentifier(NOTARIES, NOTARIES.INDIVIDUAL_ID, notaryPublicKey)) ;
-        name <- findActorName(notaryPublicKey)
-    ) yield new NotaryPublic(notaryPublicKey, name)
   }
 
   private def findActorName[IdType](key: RoleKey[IdType]): Option[NameAttribute] = {
@@ -206,56 +187,4 @@ object Repository {
                 fetchAny())
     } catch { case e: Throwable => None }
   }
-
-  private def findRecordForEntity[RecordType <: UpdatableRecordImpl[RecordType], IdType]
-                (recordIdentifier: RecordIdentifier[RecordType, IdType]): Option[Record] = {
-    val fieldIdentifier = recordIdentifier.keyField.asInstanceOf[TableField[RecordType, IdType]] //GRRR
-    try {
-      // Implicit conversion to Option in asOption above
-      context select () from recordIdentifier.table where fieldIdentifier === recordIdentifier.key.id fetchOne()
-    } catch {
-      case e: Throwable => None
-    }
-  }
-
-  private def attributeValueFor[RecordType <: UpdatableRecordImpl[RecordType], ValueType]
-                               (record: Record,
-                                fieldIdentifier: TableField[RecordType, ValueType]): AttributeValue[RecordType, ValueType] = {
-    AttributeValue(fieldIdentifier, record.getValue(fieldIdentifier))
-  }
 }
-
-/* JOOQ broken down:
-
-    val selectStep: SelectSelectStep[Record]        = context select()
-    val joinStep: SelectJoinStep[Record]            = selectStep from(ACTORS)
-    val condition: Condition                        = ACTORS.ACTOR_ID === key.id
-    val conditionStep: SelectConditionStep[Record]  = joinStep where condition
-    val record1: Record                             = conditionStep fetchOne()
-    val result: Result[Record]                      = conditionStep fetch()
-    val list: util.List[Result[Record]]             = conditionStep fetchMany()
-
- */
-/* JOOQ Scala example:
-
-    val x = ACTORS as "x"                                            // SQL-esque table aliasing
-
-    for (record <- context                                           // Iteration over Result. "r" is an org.jooq.Record
-        select (
-          INDIVIDUALS.ACTOR_ID * INDIVIDUALS.ACTOR_ID,               // Using the overloaded "*" operator
-          INDIVIDUALS.ACTOR_ID + INDIVIDUALS.ACTOR_ID * 3 + 4,       // Using the overloaded "+" operator
-          INDIVIDUALS.FIRST_NAME || " abc" || " xy"                  // Using the overloaded "||" operator
-        )
-        from INDIVIDUALS                                             // No need to use parentheses or "." here
-        leftOuterJoin (
-          context select (x.ACTOR_ID)                                // Dereference fields from aliased table
-          from x
-          limit 1
-          asTable x.getName()
-        )
-        on INDIVIDUALS.ACTOR_ID === x.ACTOR_ID                       // Using the overloaded "===" operator
-        where (INDIVIDUALS.ACTOR_ID <> 2)                            // Using the olerloaded "<>" operator
-        or (INDIVIDUALS.FIRST_NAME in ("Alquimista", "Brida"))       // Neat IN predicate expression
-        fetch
-    ) { println(record) }
-*/
