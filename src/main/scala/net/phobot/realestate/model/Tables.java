@@ -54,6 +54,11 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Purchases PURCHASES = net.phobot.realestate.model.tables.Purchases.PURCHASES;
 
 	/**
+	 * The table PUBLIC.DOCUMENT_TYPES
+	 */
+	public static final net.phobot.realestate.model.tables.DocumentTypes DOCUMENT_TYPES = net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES;
+
+	/**
 	 * The table PUBLIC.ATTORNEYS
 	 */
 	public static final net.phobot.realestate.model.tables.Attorneys ATTORNEYS = net.phobot.realestate.model.tables.Attorneys.ATTORNEYS;
@@ -62,4 +67,19 @@ public class Tables {
 	 * The table PUBLIC.TITLE_COMPANIES
 	 */
 	public static final net.phobot.realestate.model.tables.TitleCompanies TITLE_COMPANIES = net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES;
+
+	/**
+	 * The table PUBLIC.DOCUMENTS
+	 */
+	public static final net.phobot.realestate.model.tables.Documents DOCUMENTS = net.phobot.realestate.model.tables.Documents.DOCUMENTS;
+
+	/**
+	 * The table PUBLIC.SIGNATURES
+	 */
+	public static final net.phobot.realestate.model.tables.Signatures SIGNATURES = net.phobot.realestate.model.tables.Signatures.SIGNATURES;
+
+	/**
+	 * The table PUBLIC.CERTIFIED_CHECKS
+	 */
+	public static final net.phobot.realestate.model.tables.CertifiedChecks CERTIFIED_CHECKS = net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS;
 }

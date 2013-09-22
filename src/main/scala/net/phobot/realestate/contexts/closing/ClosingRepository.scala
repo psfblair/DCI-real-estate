@@ -1,12 +1,13 @@
 package net.phobot.realestate.contexts.closing
 
+import scala.collection.mutable.{Set => MutableSet}
+import scala.collection.JavaConverters._
 import scala.language.implicitConversions
 import scala.language.postfixOps
 
 import org.jooq._
 import org.jooq.scala.Conversions._
 
-import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.model.tables.Actors.ACTORS
 import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
 import net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS
@@ -14,14 +15,13 @@ import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
 import net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES
 import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
 import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
-import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute}
+import net.phobot.realestate.model.tables.Documents.DOCUMENTS
+import net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES
+
 import net.phobot.realestate.dataaccess._
-import net.phobot.realestate.contexts.closing.roles.TitleCompanyKey
-import net.phobot.realestate.contexts.closing.roles.attributes.IndividualName
-import net.phobot.realestate.contexts.closing.roles.LenderKey
-import net.phobot.realestate.contexts.closing.roles.attributes.OrganizationName
-import net.phobot.realestate.contexts.closing.roles.BuyerKey
-import net.phobot.realestate.contexts.closing.roles.SellerKey
+import net.phobot.realestate.contexts.closing.roles._
+import net.phobot.realestate.contexts.closing.roles.documents._
+import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, IndividualName, OrganizationName}
 
 import ClosingRoleKeyConversions._
 
@@ -52,36 +52,42 @@ object ClosingRepository extends Repository {
   import ClosingRoleConversions._
 
   def findBuyer(buyerKey: BuyerKey, purchaseKey: PurchaseKey) : Option[Buyer] = {
-    for (
+    val buyerIterable = for (
       actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, buyerKey)) ;
       name <- findActorName(buyerKey) ;
-      buyer <- new Buyer(buyerKey, name);
-      attorney <- findBuyerAttorney(buyer, purchaseKey)
+      attorney <- findBuyerAttorney(buyerKey, purchaseKey)
     ) yield {
-      buyer.attorney = attorney
-      buyer.realEstateAgent = findBuyerRealEstateAgent(buyer, purchaseKey)
+      val initialDocuments = findDocumentsFor(buyerKey, purchaseKey)
+      val realEstateAgent = findBuyerRealEstateAgent(buyerKey, purchaseKey)  // Option
+      val buyer = new Buyer(buyerKey, name, attorney, realEstateAgent, initialDocuments)
+      attorney.client = buyer
+      realEstateAgent foreach (agent => agent.client = buyer)
       buyer
     }
+    buyerIterable head
   }
 
   def findSeller(sellerKey: SellerKey, purchaseKey: PurchaseKey) : Option[Seller] = {
-    for (
+    val sellerIterable = for (
       actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, sellerKey)) ;
       name <- findActorName(sellerKey) ;
-      seller <- new Seller(sellerKey, name) ;
-      attorney  <- findSellerAttorney(seller, purchaseKey)
+      attorney  <- findSellerAttorney(sellerKey, purchaseKey)
     ) yield {
-      seller.attorney = attorney
-      seller.realEstateAgent = findSellerRealEstateAgent(seller, purchaseKey)
+      val initialDocuments = findDocumentsFor(sellerKey, purchaseKey)
+      val realEstateAgent = findSellerRealEstateAgent(sellerKey, purchaseKey)  // Option
+      val seller = new Seller(sellerKey, name, attorney, realEstateAgent, initialDocuments) ;
+      attorney.client = seller
+      realEstateAgent foreach (agent => agent.client = seller)
       seller
     }
+    sellerIterable head
   }
 
   def findLender(lenderKey: LenderKey, purchaseKey: PurchaseKey) : Option[Lender] = {
     for (
       actor <- findRecordForEntity(RecordIdentifier(ACTORS, ACTORS.ACTOR_ID, lenderKey)) ;
       name <- findActorName(lenderKey) ;
-      lender <- new Lender(lenderKey, name) ;
+      initialDocuments = findDocumentsFor(lenderKey, purchaseKey) ; lender <- new Lender(lenderKey, name, initialDocuments) ;
       lenderRepresentative  <- findLenderRepresentative(lender, purchaseKey)
     ) yield {
       lender.representedBy = lenderRepresentative
@@ -119,16 +125,16 @@ object ClosingRepository extends Repository {
     List(individualName, organizationName) filter (x => x.isDefined) head
   }
 
-  private def findBuyerAttorney(buyer: Buyer, purchaseKey: PurchaseKey) : Option[BuyersAttorney] = {
+  private def findBuyerAttorney(key: BuyerKey, purchaseKey: PurchaseKey) : Option[BuyersAttorney] = {
     for {
-      attorneyRecord <- findAttorneyFor(buyer.key, purchaseKey)
-    } yield new BuyersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), buyer)
+      attorneyRecord <- findAttorneyFor(key, purchaseKey)
+    } yield new BuyersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID))
   }
 
-  private def findSellerAttorney(seller: Seller, purchaseKey: PurchaseKey) : Option[SellersAttorney] = {
+  private def findSellerAttorney(key: SellerKey, purchaseKey: PurchaseKey) : Option[SellersAttorney] = {
     for {
-      attorneyRecord <- findAttorneyFor(seller.key, purchaseKey)
-    } yield new SellersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID), seller)
+      attorneyRecord <- findAttorneyFor(key, purchaseKey)
+    } yield new SellersAttorney(attorneyRecord.getValue(ATTORNEYS.REPRESENTATIVE_ID))
   }
 
   private def findAttorneyFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
@@ -142,16 +148,16 @@ object ClosingRepository extends Repository {
     } catch { case e: Throwable => None }
   }
 
-  private def findBuyerRealEstateAgent(buyer: Buyer, purchaseKey: PurchaseKey) : Option[BuyersRealEstateAgent] = {
+  private def findBuyerRealEstateAgent(key: BuyerKey, purchaseKey: PurchaseKey) : Option[BuyersRealEstateAgent] = {
     for {
-      realEstateAgentRecord <- findRealEstateAgentFor(buyer.key, purchaseKey)
-    } yield new BuyersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID), buyer)
+      realEstateAgentRecord <- findRealEstateAgentFor(key, purchaseKey)
+    } yield new BuyersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID))
   }
 
-  private def findSellerRealEstateAgent(seller: Seller, purchaseKey: PurchaseKey) : Option[SellersRealEstateAgent] = {
+  private def findSellerRealEstateAgent(key: SellerKey, purchaseKey: PurchaseKey) : Option[SellersRealEstateAgent] = {
     for {
-      realEstateAgentRecord <- findRealEstateAgentFor(seller.key, purchaseKey)
-    } yield new SellersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID), seller)
+      realEstateAgentRecord <- findRealEstateAgentFor(key, purchaseKey)
+    } yield new SellersRealEstateAgent(realEstateAgentRecord.getValue(REPRESENTATIVES.ACTOR_ID))
   }
 
   private def findRealEstateAgentFor(key: RoleKey[Long], purchaseKey: PurchaseKey): Option[Record] = {
@@ -186,5 +192,40 @@ object ClosingRepository extends Repository {
                 and ACTORS_REPRESENTATIVES.ACTOR_ID === key.id
                 fetchAny())
     } catch { case e: Throwable => None }
+  }
+
+  private def findDocumentsFor(roleKey: RoleKey[Long], purchaseKey: PurchaseKey) : MutableSet[ClosingDocument] = {
+    try{
+      val results: Iterator[Record] = (context.select (DOCUMENTS.IN_POSSESSION_OF, DOCUMENT_TYPES.DOC_TYPE)
+                                        from (DOCUMENTS, DOCUMENT_TYPES)
+                                        where DOCUMENTS.IN_POSSESSION_OF === ACTORS.ACTOR_ID
+                                        and DOCUMENTS.PURCHASE_ID === purchaseKey.id
+                                        and ACTORS.ACTOR_ID === roleKey.id
+                                        and DOCUMENTS.DOCUMENT_TYPE_ID === DOCUMENT_TYPES.ID
+                                        fetch).iterator().asScala
+
+      implicit def CertificateOfInspectionAsOption[T](cert: CertificateOfInspection[T]): Option[CertificateOfInspection[T]] = Option(cert)
+      implicit def CertificateOfInsuranceAsOption[T](cert: CertificateOfInsurance[T]): Option[CertificateOfInsurance[T]] = Option(cert)
+      implicit def ClosingStatementAsOption[T](stmt: ClosingStatement[T]): Option[ClosingStatement[T]] = Option(stmt)
+      implicit def ContractOfSaleAsOption[T](contract: ContractOfSale[T]): Option[ContractOfSale[T]] = Option(contract)
+      implicit def MortgageAsOption[T](mortgage: Mortgage[T]): Option[Mortgage[T]] = Option(mortgage)
+      implicit def PromissoryNoteAsOption[T](note: PromissoryNote[T]): Option[PromissoryNote[T]] = Option(note)
+      implicit def TitleDeedAsOption[T](deed: TitleDeed[T]): Option[TitleDeed[T]] = Option(deed)
+
+      val documentIterator: Iterator[Option[ClosingDocument]] = results map (record => {
+        val id = record.getValue(DOCUMENTS.ID)
+        record.getValue(DOCUMENT_TYPES.DOC_TYPE) match {
+          case "CERTIFICATE_OF_INSPECTION"    => CertificateOfInspection(CertificateOfInspectionKey(id), roleKey)
+          case "CERTIFICATE_OF_INSURANCE"     => CertificateOfInsurance(CertificateOfInsuranceKey(id), roleKey)
+          case "CLOSING_STATEMENT"            => ClosingStatement(ClosingStatementKey(id), roleKey)
+          case "CONTRACT_OF_SALE"             => ContractOfSale(ContractOfSaleKey(id), roleKey)
+          case "MORTGAGE"                     => Mortgage(MortgageKey(id), roleKey)
+          case "PROMISSORY_NOTE"              => PromissoryNote(PromissoryNoteKey(id), roleKey)
+          case "TITLE_DEED"                   => TitleDeed(TitleDeedKey(id), roleKey)
+          case _                              => None
+        }
+      })
+      MutableSet((documentIterator flatMap (x => x)).toList: _*)
+    } catch { case e: Throwable => MutableSet.empty }
   }
 }

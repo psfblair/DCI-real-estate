@@ -30,8 +30,10 @@ public class Keys {
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_3C = UniqueKeys0.CONSTRAINT_3C;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_2 = UniqueKeys0.CONSTRAINT_2;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_3B = UniqueKeys0.CONSTRAINT_3B;
+	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord> CONSTRAINT_26 = UniqueKeys0.CONSTRAINT_26;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord> CONSTRAINT_A2 = UniqueKeys0.CONSTRAINT_A2;
 	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> CONSTRAINT_8A = UniqueKeys0.CONSTRAINT_8A;
+	public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord> CONSTRAINT_DE = UniqueKeys0.CONSTRAINT_DE;
 
 	// -------------------------------------------------------------------------
 	// FOREIGN KEY definitions
@@ -47,6 +49,13 @@ public class Keys {
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.IndividualsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_1 = ForeignKeys0.CONSTRAINT_1;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, net.phobot.realestate.model.tables.records.RepresentativesRecord> CONSTRAINT_A = ForeignKeys0.CONSTRAINT_A;
 	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_8 = ForeignKeys0.CONSTRAINT_8;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.DocumentTypesRecord> CONSTRAINT_DE5 = ForeignKeys0.CONSTRAINT_DE5;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_DE55 = ForeignKeys0.CONSTRAINT_DE55;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_DE556 = ForeignKeys0.CONSTRAINT_DE556;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.SignaturesRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_DC9 = ForeignKeys0.CONSTRAINT_DC9;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_14 = ForeignKeys0.CONSTRAINT_14;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_149 = ForeignKeys0.CONSTRAINT_149;
+	public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_1499 = ForeignKeys0.CONSTRAINT_1499;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -63,8 +72,10 @@ public class Keys {
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_3C = createUniqueKey(net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS, net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS.ACTOR_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_2 = createUniqueKey(net.phobot.realestate.model.tables.Individuals.INDIVIDUALS, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS.ACTOR_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_3B = createUniqueKey(net.phobot.realestate.model.tables.Purchases.PURCHASES, net.phobot.realestate.model.tables.Purchases.PURCHASES.PURCHASE_ID);
+		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord> CONSTRAINT_26 = createUniqueKey(net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES, net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES.ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord> CONSTRAINT_A2 = createUniqueKey(net.phobot.realestate.model.tables.Attorneys.ATTORNEYS, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS.REPRESENTATIVE_ID);
 		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> CONSTRAINT_8A = createUniqueKey(net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES.ORGANIZATION_ID);
+		public static final org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord> CONSTRAINT_DE = createUniqueKey(net.phobot.realestate.model.tables.Documents.DOCUMENTS, net.phobot.realestate.model.tables.Documents.DOCUMENTS.ID);
 	}
 
 	private static class ForeignKeys0 extends org.jooq.impl.AbstractKeys {
@@ -78,5 +89,12 @@ public class Keys {
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.IndividualsRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_1 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS, net.phobot.realestate.model.tables.Individuals.INDIVIDUALS.ACTOR_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, net.phobot.realestate.model.tables.records.RepresentativesRecord> CONSTRAINT_A = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_6A, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS, net.phobot.realestate.model.tables.Attorneys.ATTORNEYS.REPRESENTATIVE_ID);
 		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, net.phobot.realestate.model.tables.records.OrganizationsRecord> CONSTRAINT_8 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3C, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES, net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES.ORGANIZATION_ID);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.DocumentTypesRecord> CONSTRAINT_DE5 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_26, net.phobot.realestate.model.tables.Documents.DOCUMENTS, net.phobot.realestate.model.tables.Documents.DOCUMENTS.DOCUMENT_TYPE_ID);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.PurchasesRecord> CONSTRAINT_DE55 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3B, net.phobot.realestate.model.tables.Documents.DOCUMENTS, net.phobot.realestate.model.tables.Documents.DOCUMENTS.PURCHASE_ID);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_DE556 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_2, net.phobot.realestate.model.tables.Documents.DOCUMENTS, net.phobot.realestate.model.tables.Documents.DOCUMENTS.IN_POSSESSION_OF);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.SignaturesRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_DC9 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.Signatures.SIGNATURES, net.phobot.realestate.model.tables.Signatures.SIGNATURES.ACTOR_ID);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_14 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS.PAYABLE_TO);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.ActorsRecord> CONSTRAINT_149 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_3, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS.BELONGS_TO);
+		public static final org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, net.phobot.realestate.model.tables.records.IndividualsRecord> CONSTRAINT_1499 = createForeignKey(net.phobot.realestate.model.Keys.CONSTRAINT_2, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS, net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS.IN_POSSESSION_OF);
 	}
 }

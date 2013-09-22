@@ -51,6 +51,9 @@ Preconditions (i.e., "validation")
     Evidence of homeowner's insurance for lender, if required
 
   Seller must have:
+    Check for attorney fee (if applicable)
+    Check for broker fee?
+    Check for transfer tax
     Deed to property?
     Key to property?
 
@@ -80,7 +83,11 @@ What happens:
   Seller pays brokers' fees to seller's broker
   Seller pays seller's attorney with certified check
   Seller pays transfer taxes to closing agent with certified check
+
+
+  Leave out:
   Seller's broker pays buyer's broker (later?)
+  Everybody gets copies of all of the documents
 */
 
 

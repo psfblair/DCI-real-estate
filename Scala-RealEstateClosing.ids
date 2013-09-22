@@ -312,10 +312,13 @@
       <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfMkFBMjZEMzRfQzA5MF80MzEwX0I4NEVfQ0E4QTVCQkQyNTU1KQ==" autoIncrement="true"/>
       <primary-key name="CONSTRAINT_3" columns="ACTOR_ID"/>
       <exported-key name="CONSTRAINT_5A" table="ACTORS_REPRESENTATIVES" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
+      <exported-key name="CONSTRAINT_14" table="CERTIFIED_CHECKS" schema="PUBLIC" catalog="TEST" columns="PAYABLE_TO"/>
+      <exported-key name="CONSTRAINT_149" table="CERTIFIED_CHECKS" schema="PUBLIC" catalog="TEST" columns="BELONGS_TO"/>
       <exported-key name="CONSTRAINT_C" table="CONTACTS" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
       <exported-key name="CONSTRAINT_1" table="INDIVIDUALS" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
       <exported-key name="CONSTRAINT_D" table="ORGANIZATIONS" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
       <exported-key name="CONSTRAINT_6" table="REPRESENTATIVES" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
+      <exported-key name="CONSTRAINT_DC9" table="SIGNATURES" schema="PUBLIC" catalog="TEST" columns="ACTOR_ID"/>
     </table>
     <table name="ACTORS_REPRESENTATIVES" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
@@ -331,10 +334,37 @@
       <foreign-key name="CONSTRAINT_A" columns="REPRESENTATIVE_ID" ref-table="REPRESENTATIVES" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
       <index name="CONSTRAINT_A_INDEX_4" unique="false" columns="REPRESENTATIVE_ID"/>
     </table>
+    <table name="CERTIFIED_CHECKS" schema="PUBLIC" catalog="TEST" type="TABLE">
+      <column name="ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="AMOUNT" sqlType="DECIMAL" length="65535" precision="32767" nullable="false" jdbcType="3"/>
+      <column name="PAYABLE_TO" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
+      <column name="BELONGS_TO" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
+      <column name="IN_POSSESSION_OF" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
+      <column name="PURCHASE_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <foreign-key name="CONSTRAINT_14" columns="PAYABLE_TO" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <foreign-key name="CONSTRAINT_149" columns="BELONGS_TO" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <foreign-key name="CONSTRAINT_1499" columns="IN_POSSESSION_OF" ref-table="INDIVIDUALS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+    </table>
     <table name="CONTACTS" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="EMAIL" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12"/>
       <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
       <foreign-key name="CONSTRAINT_C" columns="ACTOR_ID" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+    </table>
+    <table name="DOCUMENTS" schema="PUBLIC" catalog="TEST" type="TABLE">
+      <column name="ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="DOCUMENT_TYPE_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="PURCHASE_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="IN_POSSESSION_OF" sqlType="BIGINT" length="19" precision="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="CONSTRAINT_DE" columns="ID"/>
+      <foreign-key name="CONSTRAINT_DE5" columns="DOCUMENT_TYPE_ID" ref-table="DOCUMENT_TYPES" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <foreign-key name="CONSTRAINT_DE556" columns="IN_POSSESSION_OF" ref-table="INDIVIDUALS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <foreign-key name="CONSTRAINT_DE55" columns="PURCHASE_ID" ref-table="PURCHASES" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="PURCHASE_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+    </table>
+    <table name="DOCUMENT_TYPES" schema="PUBLIC" catalog="TEST" type="TABLE">
+      <column name="ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="DOC_TYPE" sqlType="VARCHAR" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <primary-key name="CONSTRAINT_26" columns="ID"/>
+      <exported-key name="CONSTRAINT_DE5" table="DOCUMENTS" schema="PUBLIC" catalog="TEST" columns="DOCUMENT_TYPE_ID"/>
     </table>
     <table name="INDIVIDUALS" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="FIRST_NAME" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12"/>
@@ -342,6 +372,8 @@
       <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
       <primary-key name="CONSTRAINT_2" columns="ACTOR_ID"/>
       <foreign-key name="CONSTRAINT_1" columns="ACTOR_ID" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <exported-key name="CONSTRAINT_1499" table="CERTIFIED_CHECKS" schema="PUBLIC" catalog="TEST" columns="IN_POSSESSION_OF"/>
+      <exported-key name="CONSTRAINT_DE556" table="DOCUMENTS" schema="PUBLIC" catalog="TEST" columns="IN_POSSESSION_OF"/>
       <index name="CONSTRAINT_1_INDEX_E" unique="false" columns="ACTOR_ID"/>
     </table>
     <table name="ORGANIZATIONS" schema="PUBLIC" catalog="TEST" type="TABLE">
@@ -356,6 +388,7 @@
       <column name="PURCHASE_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
       <primary-key name="CONSTRAINT_3B" columns="PURCHASE_ID"/>
       <exported-key name="CONSTRAINT_5" table="ACTORS_REPRESENTATIVES" schema="PUBLIC" catalog="TEST" columns="PURCHASE_ID"/>
+      <exported-key name="CONSTRAINT_DE55" table="DOCUMENTS" schema="PUBLIC" catalog="TEST" columns="PURCHASE_ID"/>
     </table>
     <table name="REAL_ESTATE_AGENTS" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="REPRESENTATIVE_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
@@ -370,6 +403,12 @@
       <exported-key name="CONSTRAINT_A" table="ATTORNEYS" schema="PUBLIC" catalog="TEST" columns="REPRESENTATIVE_ID"/>
       <exported-key name="CONSTRAINT_DD2" table="REAL_ESTATE_AGENTS" schema="PUBLIC" catalog="TEST" columns="REPRESENTATIVE_ID"/>
       <index name="CONSTRAINT_6_INDEX_2" unique="false" columns="ACTOR_ID"/>
+    </table>
+    <table name="SIGNATURES" schema="PUBLIC" catalog="TEST" type="TABLE">
+      <column name="DOCUMENT_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="ACTOR_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
+      <column name="DATE" sqlType="DATE" length="8" precision="0" nullable="false" jdbcType="91"/>
+      <foreign-key name="CONSTRAINT_DC9" columns="ACTOR_ID" ref-table="ACTORS" ref-schema="PUBLIC" ref-catalog="TEST" ref-columns="ACTOR_ID" update-rule="1" delete-rule="1" deferrability="2"/>
     </table>
     <table name="TITLE_COMPANIES" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="ORGANIZATION_ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>

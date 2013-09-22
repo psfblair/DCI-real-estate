@@ -32,13 +32,13 @@ class Repository {
 
 /* JOOQ broken down:
 
-    val selectStep: SelectSelectStep[Record]        = context select()
-    val joinStep: SelectJoinStep[Record]            = selectStep from(ACTORS)
-    val condition: Condition                        = ACTORS.ACTOR_ID === key.id
-    val conditionStep: SelectConditionStep[Record]  = joinStep where condition
-    val record1: Record                             = conditionStep fetchOne()
-    val result: Result[Record]                      = conditionStep fetch()
-    val list: util.List[Result[Record]]             = conditionStep fetchMany()
+    val selectStep:     SelectSelectStep[Record]          = context select()
+    val joinStep:       SelectJoinStep[Record]            = selectStep from(ACTORS)
+    val condition:      Condition                         = ACTORS.ACTOR_ID === key.id
+    val conditionStep:  SelectConditionStep[Record]       = joinStep where condition
+    val record1:        Record                            = conditionStep fetchOne()
+    val result:         Result[Record]                    = conditionStep fetch()     // Result can be iterated over
+    val list:           util.List[Result[Record]]         = conditionStep fetchMany() // Many result sets, in a list
 
  */
 /* JOOQ Scala example:
