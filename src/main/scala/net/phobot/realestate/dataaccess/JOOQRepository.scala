@@ -1,19 +1,19 @@
 package net.phobot.realestate.dataaccess
 
 import java.sql.DriverManager
-import org.jooq.impl.{UpdatableRecordImpl, DSL}
+import org.jooq.impl.DSL
 import org.jooq._
 import org.jooq.scala.Conversions._
 import DatabaseResultConversions._
 
-class Repository {
+class JOOQRepository {
   // When done for real, manage exceptions with opening connection, connection pooling, etc.
   Class.forName("org.h2.Driver").newInstance()
   private val connection = DriverManager.getConnection ("jdbc:h2:~/Documents/workspace-IDEA/Scala-RealEstateClosing/test")
   protected val context = DSL.using(connection, SQLDialect.H2)
 
-  def findRecordForEntity[RecordType <: UpdatableRecordImpl[RecordType], IdType]
-                (recordIdentifier: RecordIdentifier[RecordType, IdType]): Option[Record] = {
+  def findRecordForEntity[RecordType <: Record, IdType]
+                (recordIdentifier: JOOQRecordIdentifier[RecordType, IdType]): Option[Record] = {
 
     val fieldIdentifier = recordIdentifier.keyField.asInstanceOf[TableField[RecordType, IdType]] //GRRR
     try {
@@ -24,9 +24,20 @@ class Repository {
     }
   }
 
-  def attributeValueFor[RecordType <: UpdatableRecordImpl[RecordType], ValueType]
-        (record: Record, fieldIdentifier: TableField[RecordType, ValueType]): AttributeValue[RecordType, ValueType] = {
-    AttributeValue(fieldIdentifier, record.getValue(fieldIdentifier))
+  def nullableAttributeValueFor[RecordType <: Record, RecordKeyType, ValueType]
+        (recordIdentifier: JOOQRecordIdentifier[RecordType, RecordKeyType],
+         record: Record,
+         fieldIdentifier: TableField[RecordType, ValueType]): AttributeWithOptionalValue[ValueType, Option[ValueType]] = {
+    val value = record.getValue(fieldIdentifier)
+    JOOQAttributeOptionalValue(recordIdentifier, fieldIdentifier, Option(value))
+  }
+
+  def nonNullableAttributeValueFor[RecordType <: Record, RecordKeyType, ValueType]
+        (recordIdentifier: JOOQRecordIdentifier[RecordType, RecordKeyType],
+         record: Record,
+         fieldIdentifier: TableField[RecordType, ValueType]): AttributeValue[ValueType] = {
+    val value = record.getValue(fieldIdentifier)
+    JOOQAttributeValue(recordIdentifier, fieldIdentifier, value)
   }
 }
 

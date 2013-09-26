@@ -10,6 +10,6 @@ class SellersAttorney(val entityId: SellersAttorneyKey) {
   def client = _client match { case Some(seller) => seller; case None => throw new IllegalStateException }
 }
 
-case class SellersAttorneyKey(private val myId: Long) extends RoleKey[Long] {
+case class SellersAttorneyKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }

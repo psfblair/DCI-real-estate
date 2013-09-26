@@ -5,5 +5,5 @@ import org.jooq.Record
 
 object DatabaseResultConversions {
   implicit def recordAsOption(record : Record): Option[Record] = Option(record)
-  implicit def attributeValueAsOption[RecordType <: Record, ValueType](attributeValue: AttributeValue[RecordType, ValueType]) : Option[AttributeValue[RecordType, ValueType]] = Option(attributeValue)
+  implicit def attributeValueAsOption[ValueType](attributeValue: AttributeValue[ValueType]) : Option[AttributeValue[ValueType]] = Option(attributeValue)
 }

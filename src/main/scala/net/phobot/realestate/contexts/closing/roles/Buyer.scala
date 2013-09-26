@@ -13,6 +13,6 @@ class Buyer(val key: BuyerKey,
   def fullName = name.fullName
 }
 
-case class BuyerKey(private val myId: Long) extends RoleKey[Long] {
+case class BuyerKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }

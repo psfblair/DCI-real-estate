@@ -1,10 +1,12 @@
 package net.phobot.realestate.dataaccess
 
 import scala.language.existentials
-import org.jooq.impl.{TableImpl, UpdatableRecordImpl}
-import org.jooq.TableField
 
-case class RecordIdentifier[RecordType <: UpdatableRecordImpl[RecordType], IdType]
-   (val table: TableImpl[RecordType],
-    val keyField: TableField[RecordType, _ <: Any],
-    val key: RoleKey[IdType])
+import org.jooq.impl.TableImpl
+import org.jooq.{Record, TableField}
+
+trait RecordIdentifier {}
+
+case class JOOQRecordIdentifier[RecordType <: Record, IdType] ( table: TableImpl[RecordType],
+                                                                keyField: TableField[RecordType, _ <: Any],
+                                                                key: RoleKey[IdType])   extends RecordIdentifier

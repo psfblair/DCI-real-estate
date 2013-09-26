@@ -3,7 +3,7 @@ package net.phobot.realestate.contexts.closing
 import ClosingRoleKeyConversions._
 import net.phobot.realestate.dataaccess.RoleKey
 
-case class PurchaseKey(private val myId: Long) extends RoleKey[Long] {
+case class PurchaseKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }
 

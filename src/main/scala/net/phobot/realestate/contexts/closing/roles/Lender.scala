@@ -16,6 +16,6 @@ class Lender(val key: LenderKey, name: Name, val documents: MutableSet[ClosingDo
   def fullName = name.fullName
 }
 
-case class LenderKey(private val myId: Long) extends RoleKey[Long] {
+case class LenderKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }

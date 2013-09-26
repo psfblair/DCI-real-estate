@@ -14,6 +14,6 @@ class TitleCompany(val key: TitleCompanyKey, name: Name) {
   def fullName = name.fullName
 }
 
-case class TitleCompanyKey(private val myId: Long) extends RoleKey[Long] {
+case class TitleCompanyKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }

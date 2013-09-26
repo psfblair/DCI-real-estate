@@ -10,6 +10,6 @@ class SellersRealEstateAgent(val key: SellersRealEstateAgentKey) {
   def client = _client match { case Some(seller) => seller; case None => throw new IllegalStateException }
 }
 
-case class SellersRealEstateAgentKey(private val myId: Long) extends RoleKey[Long] {
+case class SellersRealEstateAgentKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }

@@ -11,7 +11,7 @@ class BuyersAttorney(val key: BuyersAttorneyKey) {
 
 }
 
-case class BuyersAttorneyKey(private val myId: Long) extends RoleKey[Long] {
+case class BuyersAttorneyKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {
   def id = myId
 }
 
