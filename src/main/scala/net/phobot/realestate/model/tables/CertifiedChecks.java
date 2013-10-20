@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CertifiedChecks extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.CertifiedChecksRecord> {
 
-	private static final long serialVersionUID = -1254953425;
+	private static final long serialVersionUID = 1991387291;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.CERTIFIED_CHECKS</code>
@@ -52,6 +52,11 @@ public class CertifiedChecks extends org.jooq.impl.TableImpl<net.phobot.realesta
 	public final org.jooq.TableField<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, java.lang.Long> IN_POSSESSION_OF = createField("IN_POSSESSION_OF", org.jooq.impl.SQLDataType.BIGINT, this);
 
 	/**
+	 * The column <code>PUBLIC.CERTIFIED_CHECKS.PAYMENT_FOR</code>. 
+	 */
+	public final org.jooq.TableField<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, java.lang.Long> PAYMENT_FOR = createField("PAYMENT_FOR", org.jooq.impl.SQLDataType.BIGINT, this);
+
+	/**
 	 * The column <code>PUBLIC.CERTIFIED_CHECKS.PURCHASE_ID</code>. 
 	 */
 	public final org.jooq.TableField<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, java.lang.Long> PURCHASE_ID = createField("PURCHASE_ID", org.jooq.impl.SQLDataType.BIGINT, this);
@@ -75,7 +80,7 @@ public class CertifiedChecks extends org.jooq.impl.TableImpl<net.phobot.realesta
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_14, net.phobot.realestate.model.Keys.CONSTRAINT_149, net.phobot.realestate.model.Keys.CONSTRAINT_1499);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.CertifiedChecksRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_1, net.phobot.realestate.model.Keys.CONSTRAINT_14, net.phobot.realestate.model.Keys.CONSTRAINT_149, net.phobot.realestate.model.Keys.CONSTRAINT_1499);
 	}
 
 	/**

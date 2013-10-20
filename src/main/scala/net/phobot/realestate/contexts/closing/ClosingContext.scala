@@ -37,6 +37,15 @@ class ClosingContext {
     A check belongs to one actor
     A check is payable to one actor
     A check is for a particular purchase
+
+  Payments for:
+    Down payment
+    Lender fees
+    Attorney fees
+    Closing costs (to closing agent)
+    Broker fee
+    Taxes
+    Loan proceeds
 */
 
 /* Simplified scenario:

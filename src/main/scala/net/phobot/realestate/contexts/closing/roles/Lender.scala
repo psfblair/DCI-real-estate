@@ -1,17 +1,14 @@
 package net.phobot.realestate.contexts.closing.roles
 
-import scala.collection.mutable.{Set => MutableSet}
+import net.phobot.realestate.util.OptionExtensions._
 import net.phobot.realestate.contexts.closing.roles.attributes.Name
 import net.phobot.realestate.dataaccess.RoleKey
-import net.phobot.realestate.contexts.closing.roles.documents.ClosingDocument
 
-class Lender(val key: LenderKey, name: Name, val documents: MutableSet[ClosingDocument]) {
-  private var _representedBy = null: LendersRepresentative
+class Lender(val key: LenderKey, name: Name) {
+  private var _representedBy: Option[LendersRepresentative] = None
 
-  def representedBy_= (buyersAttorney: LendersRepresentative) : Unit = {
-    if (_representedBy eq null) _representedBy = buyersAttorney else throw new IllegalStateException
-  }
-  def representedBy = if (_representedBy eq null) throw new IllegalStateException else _representedBy
+  def representedBy_= (lenderRep: LendersRepresentative) = { _representedBy = _representedBy.setOnlyOnce(lenderRep) }
+  def representedBy = _representedBy match { case Some(representative) => representative; case None => throw new IllegalStateException }
 
   def fullName = name.fullName
 }

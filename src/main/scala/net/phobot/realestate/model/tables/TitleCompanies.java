@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TitleCompanies extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> {
 
-	private static final long serialVersionUID = -1312567541;
+	private static final long serialVersionUID = -2018512502;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.TITLE_COMPANIES</code>
@@ -50,7 +50,7 @@ public class TitleCompanies extends org.jooq.impl.TableImpl<net.phobot.realestat
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_8A;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_8;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class TitleCompanies extends org.jooq.impl.TableImpl<net.phobot.realestat
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_8A);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_8);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class TitleCompanies extends org.jooq.impl.TableImpl<net.phobot.realestat
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_8);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.TitleCompaniesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_8A);
 	}
 
 	/**

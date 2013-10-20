@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Signatures extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.SignaturesRecord> {
 
-	private static final long serialVersionUID = 1124559882;
+	private static final long serialVersionUID = -736488977;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.SIGNATURES</code>
@@ -60,7 +60,7 @@ public class Signatures extends org.jooq.impl.TableImpl<net.phobot.realestate.mo
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.SignaturesRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.SignaturesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_DC9);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.SignaturesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_DC);
 	}
 
 	/**

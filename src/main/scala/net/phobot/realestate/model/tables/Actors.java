@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Actors extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.ActorsRecord> {
 
-	private static final long serialVersionUID = 1765891101;
+	private static final long serialVersionUID = -1298063217;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.ACTORS</code>
@@ -49,16 +49,8 @@ public class Actors extends org.jooq.impl.TableImpl<net.phobot.realestate.model.
 	 * {@inheritDoc}
 	 */
 	@Override
-	public org.jooq.Identity<net.phobot.realestate.model.tables.records.ActorsRecord, java.lang.Long> getIdentity() {
-		return net.phobot.realestate.model.Keys.IDENTITY_ACTORS;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.ActorsRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_3;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_7;
 	}
 
 	/**
@@ -66,7 +58,7 @@ public class Actors extends org.jooq.impl.TableImpl<net.phobot.realestate.model.
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.ActorsRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.ActorsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_3);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.ActorsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_7);
 	}
 
 	/**

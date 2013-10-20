@@ -8,7 +8,6 @@ class BuyersAttorney(val key: BuyersAttorneyKey) {
 
   def client_= (buyer: Buyer) = { _client = _client.setOnlyOnce(buyer) }
   def client = _client match { case Some(buyer) => buyer; case None => throw new IllegalStateException }
-
 }
 
 case class BuyersAttorneyKey(private val myId: java.lang.Long) extends RoleKey[java.lang.Long] {

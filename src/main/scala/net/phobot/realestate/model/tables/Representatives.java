@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Representatives extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.RepresentativesRecord> {
 
-	private static final long serialVersionUID = 960510966;
+	private static final long serialVersionUID = 2059092375;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.REPRESENTATIVES</code>
@@ -50,7 +50,7 @@ public class Representatives extends org.jooq.impl.TableImpl<net.phobot.realesta
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.RepresentativesRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_6A;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_6;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Representatives extends org.jooq.impl.TableImpl<net.phobot.realesta
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.RepresentativesRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.RepresentativesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_6A);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.RepresentativesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_6);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Representatives extends org.jooq.impl.TableImpl<net.phobot.realesta
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.RepresentativesRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.RepresentativesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_6);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.RepresentativesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_6A);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
 import net.phobot.realestate.model.tables.Documents.DOCUMENTS
 import net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES
 import net.phobot.realestate.model.tables.CertifiedChecks._
+import net.phobot.realestate.model.tables.PaymentTypes.PAYMENT_TYPES
 
 import net.phobot.realestate.dataaccess._
 import net.phobot.realestate.contexts.closing.roles._
@@ -27,7 +28,7 @@ import net.phobot.realestate.contexts.closing.roles.payments._
 import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, _}
 
 import ClosingRoleKeyConversions._
-import java.{math}
+import java.math
 
 object ClosingRoleConversions {
   implicit def buyerAsOption(buyer: Buyer): Option[Buyer] = Option(buyer)
@@ -58,7 +59,7 @@ object ClosingRoleKeyConversions {
 
   implicit object BuyerKeyAsActorKey extends ActorKey[BuyerKey, java.lang.Long] { def id(key: BuyerKey) = key.id }
   implicit object SellerKeyAsActorKey extends ActorKey[SellerKey, java.lang.Long] { def id(key: SellerKey) = key.id }
-  implicit object LenderKeyAsActorKey extends ActorKey[LenderKey, java.lang.Long] { def id(key: LenderKey) = key.id }
+  implicit object LendersRepresentativeKeyAsActorKey extends ActorKey[LendersRepresentativeKey, java.lang.Long] { def id(key: LendersRepresentativeKey) = key.id }
   implicit object ClosingAgentKeyAsActorKey extends ActorKey[ClosingAgentKey, java.lang.Long] { def id(key: ClosingAgentKey) = key.id }
   implicit object BuyersAttorneyKeyAsActorKey extends ActorKey[BuyersAttorneyKey, java.lang.Long] { def id(key: BuyersAttorneyKey) = key.id }
   implicit object SellersAttorneyKeyAsActorKey extends ActorKey[SellersAttorneyKey, java.lang.Long] { def id(key: SellersAttorneyKey) = key.id }
@@ -77,10 +78,10 @@ object ClosingRepository extends JOOQRepository {
       name <- findActorName(buyerKey) ;
       attorney <- findBuyerAttorney(buyerKey, purchaseKey)
     ) yield {
+      val realEstateAgent = findBuyerRealEstateAgent(buyerKey, purchaseKey)  // Option
       val initialDocuments = findDocumentsFor(buyerKey, purchaseKey)
       val checks = findChecksCarriedBy(buyerKey, purchaseKey)
-      val realEstateAgent = findBuyerRealEstateAgent(buyerKey, purchaseKey)  // Option
-      val buyer = new Buyer(buyerKey, name, attorney, realEstateAgent, initialDocuments)
+      val buyer = new Buyer(buyerKey, name, attorney, realEstateAgent, initialDocuments, checks)
       attorney.client = buyer
       realEstateAgent foreach (agent => agent.client = buyer)
       buyer
@@ -94,9 +95,10 @@ object ClosingRepository extends JOOQRepository {
       name <- findActorName(sellerKey) ;
       attorney  <- findSellerAttorney(sellerKey, purchaseKey)
     ) yield {
-      val initialDocuments = findDocumentsFor(sellerKey, purchaseKey)
       val realEstateAgent = findSellerRealEstateAgent(sellerKey, purchaseKey)  // Option
-      val seller = new Seller(sellerKey, name, attorney, realEstateAgent, initialDocuments) ;
+      val initialDocuments = findDocumentsFor(sellerKey, purchaseKey)
+      val checks = findChecksCarriedBy(sellerKey, purchaseKey)
+      val seller = new Seller(sellerKey, name, attorney, realEstateAgent, initialDocuments, checks) ;
       attorney.client = seller
       realEstateAgent foreach (agent => agent.client = seller)
       seller
@@ -108,8 +110,8 @@ object ClosingRepository extends JOOQRepository {
     for (
       actor <- findRecordForEntity(JOOQRecordIdentifier(ACTORS, ACTORS.ACTOR_ID, lenderKey)) ;
       name <- findActorName(lenderKey) ;
-      initialDocuments = findDocumentsFor(lenderKey, purchaseKey) ; lender <- new Lender(lenderKey, name, initialDocuments) ;
-      lenderRepresentative  <- findLenderRepresentative(lender, purchaseKey)
+      lender <- new Lender(lenderKey, name) ;
+      lenderRepresentative <- findLenderRepresentative(lender, purchaseKey)
     ) yield {
       lender.representedBy = lenderRepresentative
       lender
@@ -195,7 +197,13 @@ object ClosingRepository extends JOOQRepository {
   private def findLenderRepresentative(lender: Lender, purchaseKey: PurchaseKey) : Option[LendersRepresentative] = {
     for {
       representativeRecord <- findRepresentativeFor(lender.key, purchaseKey)
-    } yield new LendersRepresentative(representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID), lender)
+    } yield {
+      val lendersRepresentativeKey: LendersRepresentativeKey = representativeRecord.getValue(REPRESENTATIVES.ACTOR_ID)
+      val initialDocuments = findDocumentsFor(lendersRepresentativeKey, purchaseKey)
+      val checks = findChecksCarriedBy(lendersRepresentativeKey, purchaseKey)
+      val representative = new LendersRepresentative(lendersRepresentativeKey, lender, initialDocuments, checks)
+      representative
+    }
   }
 
   private def findClosingAgent(titleCompany: TitleCompany, purchaseKey: PurchaseKey) : Option[ClosingAgent] = {
@@ -215,7 +223,7 @@ object ClosingRepository extends JOOQRepository {
     } catch { case e: Throwable => None }
   }
 
-  private def findDocumentsFor(roleKey: RoleKey[java.lang.Long], purchaseKey: PurchaseKey) : MutableSet[ClosingDocument] = {
+  private def findDocumentsFor(roleKey: RoleKey[java.lang.Long], purchaseKey: PurchaseKey) : Map[Class[_ <: ClosingDocument], ClosingDocument] = {
 
     implicit def CertificateOfInspectionAsOption[T](cert: CertificateOfInspection[T]): Option[CertificateOfInspection[T]] = Option(cert)
     implicit def CertificateOfInsuranceAsOption[T](cert: CertificateOfInsurance[T]): Option[CertificateOfInsurance[T]] = Option(cert)
@@ -225,7 +233,7 @@ object ClosingRepository extends JOOQRepository {
     implicit def PromissoryNoteAsOption[T](note: PromissoryNote[T]): Option[PromissoryNote[T]] = Option(note)
     implicit def TitleDeedAsOption[T](deed: TitleDeed[T]): Option[TitleDeed[T]] = Option(deed)
 
-    try{
+    try {
       val results: Iterator[Record] = (context.select (DOCUMENTS.ID, DOCUMENT_TYPES.DOC_TYPE)
                                                 from (DOCUMENTS, DOCUMENT_TYPES)
                                                 where DOCUMENTS.IN_POSSESSION_OF === ACTORS.ACTOR_ID
@@ -247,14 +255,18 @@ object ClosingRepository extends JOOQRepository {
           case _                              => None
         }
       })
-      MutableSet((documentIterator flatMap (x => x)).toList: _*)
-    } catch { case e: Throwable => MutableSet.empty }
+
+      documentIterator.foldLeft(Map[Class[_ <: ClosingDocument], ClosingDocument]()) ((theMap: Map[Class[_ <: ClosingDocument], ClosingDocument], documentOption: Option[ClosingDocument]) => documentOption match {
+          case Some(document) => theMap + (document.getClass -> document)
+          case None => theMap
+      })
+    } catch { case e: Throwable => Map() }
   }
 
   private def findChecksCarriedBy[PossessorRoleKeyType <: RoleKey[java.lang.Long]]
                     (roleKey: PossessorRoleKeyType,
                      purchaseKey: PurchaseKey)
-                    (implicit actorKeyObj: ActorKey[PossessorRoleKeyType, _]): MutableSet[CertifiedCheck] = {
+                    (implicit actorKeyObj: ActorKey[PossessorRoleKeyType, _]): Map[String, CertifiedCheck] = {
 
     implicit def nullableAmountAsMoneyOption(attribute: AttributeWithOptionalValue[math.BigDecimal, Option[math.BigDecimal]]): Option[Money] = {
       attribute.convertToOptionalAttributeValue map (x => MoneyImpl(x))
@@ -266,9 +278,9 @@ object ClosingRepository extends JOOQRepository {
       val check = new CertifiedCheck(checkKey, roleKey.asInstanceOf[RoleKey[Any]])    //Why do I have to do this conversion?
 
       check.amount = nullableAttributeValueFor(recordIdentifier, record, CERTIFIED_CHECKS.AMOUNT)
-      check.payableTo = record.getValue(CERTIFIED_CHECKS.PAYABLE_TO)
-      check.belongsTo = record.getValue(CERTIFIED_CHECKS.BELONGS_TO)
-
+//      check.payableTo = nullableAttributeValueFor(recordIdentifier, record, CERTIFIED_CHECKS.PAYABLE_TO)
+//      check.belongsTo = nullableAttributeValueFor(recordIdentifier, record, CERTIFIED_CHECKS.BELONGS_TO)
+      check.paymentFor = PaymentType.values.find(_.toString == record.getValue(PAYMENT_TYPES.PAYMENT_TYPE))
       check
     }
 
@@ -276,14 +288,19 @@ object ClosingRepository extends JOOQRepository {
       val results = (context.select (CERTIFIED_CHECKS.ID,
                                      CERTIFIED_CHECKS.AMOUNT,
                                      CERTIFIED_CHECKS.PAYABLE_TO,
-                                     CERTIFIED_CHECKS.BELONGS_TO)
+                                     CERTIFIED_CHECKS.BELONGS_TO,
+                                     PAYMENT_TYPES.PAYMENT_TYPE
+                              )
                               from CERTIFIED_CHECKS
-                              where CERTIFIED_CHECKS.IN_POSSESSION_OF === ACTORS.ACTOR_ID
-                              and CERTIFIED_CHECKS.PURCHASE_ID === purchaseKey.id
+                              where CERTIFIED_CHECKS.PURCHASE_ID === purchaseKey.id
+                              and CERTIFIED_CHECKS.PAYMENT_FOR === PAYMENT_TYPES.ID       //Don't want anything with null payment type
+                              and CERTIFIED_CHECKS.IN_POSSESSION_OF === ACTORS.ACTOR_ID
                               and ACTORS.ACTOR_ID === roleKey.id
                               fetch).iterator().asScala
-      val checksList: List[CertifiedCheck] = results.map(record => createCheck(record)).toList
-      MutableSet(checksList: _*)
-    } catch { case e: Throwable => MutableSet.empty }
+//      results foldLeft Map[String, CertifiedCheck]() ((theMap: Map[String, CertifiedCheck], theRecord: Record4[Long, BigDecimal, Long, Long]) => {
+//        theMap + ("foo" -> createCheck(theRecord))
+//      })
+      Map()
+    } catch { case e: Throwable => Map() }
   }
 }

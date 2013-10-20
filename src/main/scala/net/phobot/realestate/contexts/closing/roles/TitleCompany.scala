@@ -1,15 +1,14 @@
 package net.phobot.realestate.contexts.closing.roles
 
+import net.phobot.realestate.util.OptionExtensions._
 import net.phobot.realestate.contexts.closing.roles.attributes.Name
 import net.phobot.realestate.dataaccess.RoleKey
 
 class TitleCompany(val key: TitleCompanyKey, name: Name) {
-  private var _representedBy = null: ClosingAgent
+  private var _representedBy: Option[ClosingAgent] = None
 
-  def representedBy_= (closingAgent: ClosingAgent) : Unit = {
-    if (_representedBy eq null) _representedBy = closingAgent else throw new IllegalStateException
-  }
-  def representedBy = if (_representedBy eq null) throw new IllegalStateException else _representedBy
+  def representedBy_= (closingAgent: ClosingAgent) = { _representedBy = _representedBy.setOnlyOnce(closingAgent) }
+  def representedBy = _representedBy match { case Some(closingAgent) => closingAgent; case None => throw new IllegalStateException }
 
   def fullName = name.fullName
 }

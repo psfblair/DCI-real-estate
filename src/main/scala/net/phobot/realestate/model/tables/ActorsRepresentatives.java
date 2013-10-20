@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ActorsRepresentatives extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.ActorsRepresentativesRecord> {
 
-	private static final long serialVersionUID = 757220486;
+	private static final long serialVersionUID = 1694977163;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.ACTORS_REPRESENTATIVES</code>
@@ -60,7 +60,7 @@ public class ActorsRepresentatives extends org.jooq.impl.TableImpl<net.phobot.re
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.ActorsRepresentativesRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.ActorsRepresentativesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_5A, net.phobot.realestate.model.Keys.CONSTRAINT_5A7, net.phobot.realestate.model.Keys.CONSTRAINT_5);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.ActorsRepresentativesRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_2A3, net.phobot.realestate.model.Keys.CONSTRAINT_2A3C5, net.phobot.realestate.model.Keys.CONSTRAINT_2A3C);
 	}
 
 	/**

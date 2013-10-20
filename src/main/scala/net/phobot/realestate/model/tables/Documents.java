@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Documents extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.DocumentsRecord> {
 
-	private static final long serialVersionUID = -1452373725;
+	private static final long serialVersionUID = 1860556245;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.DOCUMENTS</code>
@@ -65,7 +65,7 @@ public class Documents extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_DE;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_D;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Documents extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_DE);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_D);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Documents extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_DE5, net.phobot.realestate.model.Keys.CONSTRAINT_DE55, net.phobot.realestate.model.Keys.CONSTRAINT_DE556);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.DocumentsRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_DE, net.phobot.realestate.model.Keys.CONSTRAINT_DE55, net.phobot.realestate.model.Keys.CONSTRAINT_DE5);
 	}
 
 	/**

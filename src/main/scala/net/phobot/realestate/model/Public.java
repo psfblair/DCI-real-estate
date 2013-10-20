@@ -11,7 +11,7 @@ package net.phobot.realestate.model;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = 1996784580;
+	private static final long serialVersionUID = 883148930;
 
 	/**
 	 * The singleton instance of <code>PUBLIC</code>
@@ -26,18 +26,6 @@ public class Public extends org.jooq.impl.SchemaImpl {
 	}
 
 	@Override
-	public final java.util.List<org.jooq.Sequence<?>> getSequences() {
-		java.util.List result = new java.util.ArrayList();
-		result.addAll(getSequences0());
-		return result;
-	}
-
-	private final java.util.List<org.jooq.Sequence<?>> getSequences0() {
-		return java.util.Arrays.<org.jooq.Sequence<?>>asList(
-			net.phobot.realestate.model.Sequences.SYSTEM_SEQUENCE_2AA26D34_C090_4310_B84E_CA8A5BBD2555);
-	}
-
-	@Override
 	public final java.util.List<org.jooq.Table<?>> getTables() {
 		java.util.List result = new java.util.ArrayList();
 		result.addAll(getTables0());
@@ -47,18 +35,19 @@ public class Public extends org.jooq.impl.SchemaImpl {
 	private final java.util.List<org.jooq.Table<?>> getTables0() {
 		return java.util.Arrays.<org.jooq.Table<?>>asList(
 			net.phobot.realestate.model.tables.Actors.ACTORS,
-			net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS,
-			net.phobot.realestate.model.tables.Contacts.CONTACTS,
 			net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES,
-			net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES,
-			net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS,
-			net.phobot.realestate.model.tables.Individuals.INDIVIDUALS,
-			net.phobot.realestate.model.tables.Purchases.PURCHASES,
-			net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES,
 			net.phobot.realestate.model.tables.Attorneys.ATTORNEYS,
-			net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES,
+			net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS,
+			net.phobot.realestate.model.tables.PaymentTypes.PAYMENT_TYPES,
+			net.phobot.realestate.model.tables.Contacts.CONTACTS,
 			net.phobot.realestate.model.tables.Documents.DOCUMENTS,
+			net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES,
+			net.phobot.realestate.model.tables.Individuals.INDIVIDUALS,
+			net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS,
+			net.phobot.realestate.model.tables.Purchases.PURCHASES,
+			net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS,
+			net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES,
 			net.phobot.realestate.model.tables.Signatures.SIGNATURES,
-			net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS);
+			net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES);
 	}
 }

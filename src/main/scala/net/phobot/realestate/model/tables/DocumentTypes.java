@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DocumentTypes extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.DocumentTypesRecord> {
 
-	private static final long serialVersionUID = 558235458;
+	private static final long serialVersionUID = -541243574;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.DOCUMENT_TYPES</code>
@@ -55,7 +55,7 @@ public class DocumentTypes extends org.jooq.impl.TableImpl<net.phobot.realestate
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_26;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_2;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class DocumentTypes extends org.jooq.impl.TableImpl<net.phobot.realestate
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_26);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.DocumentTypesRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_2);
 	}
 
 	/**

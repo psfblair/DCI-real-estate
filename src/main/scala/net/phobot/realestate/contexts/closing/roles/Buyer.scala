@@ -1,15 +1,16 @@
 package net.phobot.realestate.contexts.closing.roles
 
-import scala.collection.mutable.{Set => MutableSet}
 import net.phobot.realestate.contexts.closing.roles.attributes._
 import net.phobot.realestate.dataaccess.RoleKey
 import net.phobot.realestate.contexts.closing.roles.documents.ClosingDocument
+import net.phobot.realestate.contexts.closing.roles.payments.CertifiedCheck
 
 class Buyer(val key: BuyerKey,
                 name: Name,
             val attorney: BuyersAttorney,
             val realEstateAgent: Option[BuyersRealEstateAgent],
-            val documents: MutableSet[ClosingDocument]) {
+            val documents: Map[Class[_ <: ClosingDocument], ClosingDocument],
+            val payments: Map[String, CertifiedCheck]) {
   def fullName = name.fullName
 }
 

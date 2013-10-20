@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Organizations extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.OrganizationsRecord> {
 
-	private static final long serialVersionUID = 1156628598;
+	private static final long serialVersionUID = 1855621418;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.ORGANIZATIONS</code>
@@ -55,7 +55,7 @@ public class Organizations extends org.jooq.impl.TableImpl<net.phobot.realestate
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_3C;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_3;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Organizations extends org.jooq.impl.TableImpl<net.phobot.realestate
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_3C);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.OrganizationsRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_3);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class Organizations extends org.jooq.impl.TableImpl<net.phobot.realestate
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.OrganizationsRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.OrganizationsRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_D);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.OrganizationsRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_3C);
 	}
 
 	/**

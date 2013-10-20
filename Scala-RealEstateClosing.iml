@@ -15,7 +15,6 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/scala" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/scala" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
@@ -41,61 +40,11 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq/3.1.0/jar/beff94b7bef298bb480fa8280c224e07ef34476c/jooq-3.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq/3.1.0/source/31e6ecea7f49e04d00771d5eae3eeee68a3d20e2/jooq-3.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-meta/3.1.0/jar/1b2250dafd328eae0cf8cf08843cc2167760831b/jooq-meta-3.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-meta/3.1.0/source/d7bc1e5b3c779912f71cfe6af82ca0b61dc05da/jooq-meta-3.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-codegen/3.1.0/jar/da9752db740b7d62ea7c51acb057b9ea8a53ba23/jooq-codegen-3.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-codegen/3.1.0/source/318967eaa65c17d9e5b6f41408bfe2453168c796/jooq-codegen-3.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-scala/3.1.0/jar/eddff70566ead94bebca464855a7ed029425b85/jooq-scala-3.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.jooq/jooq-scala/3.1.0/source/499f70fb085c834c9dad310c51980d1a50dcf6c9/jooq-scala-3.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/com.h2database/h2/1.3.173/jar/3d9cc700d2c6b0b7a9bb59bd2b850e6518b6c209/h2-1.3.173.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/com.h2database/h2/1.3.173/source/8c478dd765d0ca5fc51c09bceb152c0f65dad7f6/h2-1.3.173-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="jooq-3.1.0" level="project" />
+    <orderEntry type="library" name="jooq-meta-3.1.0" level="project" />
+    <orderEntry type="library" name="jooq-codegen-3.1.0" level="project" />
+    <orderEntry type="library" name="jooq-scala-3.1.0" level="project" />
+    <orderEntry type="library" name="h2-1.3.173" level="project" />
   </component>
 </module>
 

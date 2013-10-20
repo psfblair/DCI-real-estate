@@ -11,7 +11,7 @@ package net.phobot.realestate.model.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Attorneys extends org.jooq.impl.TableImpl<net.phobot.realestate.model.tables.records.AttorneysRecord> {
 
-	private static final long serialVersionUID = 986683863;
+	private static final long serialVersionUID = -988243857;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.ATTORNEYS</code>
@@ -50,7 +50,7 @@ public class Attorneys extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord> getPrimaryKey() {
-		return net.phobot.realestate.model.Keys.CONSTRAINT_A2;
+		return net.phobot.realestate.model.Keys.CONSTRAINT_A;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Attorneys extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_A2);
+		return java.util.Arrays.<org.jooq.UniqueKey<net.phobot.realestate.model.tables.records.AttorneysRecord>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_A);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Attorneys extends org.jooq.impl.TableImpl<net.phobot.realestate.mod
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_A);
+		return java.util.Arrays.<org.jooq.ForeignKey<net.phobot.realestate.model.tables.records.AttorneysRecord, ?>>asList(net.phobot.realestate.model.Keys.CONSTRAINT_A2);
 	}
 
 	/**

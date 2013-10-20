@@ -19,44 +19,9 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Actors ACTORS = net.phobot.realestate.model.tables.Actors.ACTORS;
 
 	/**
-	 * The table PUBLIC.REAL_ESTATE_AGENTS
-	 */
-	public static final net.phobot.realestate.model.tables.RealEstateAgents REAL_ESTATE_AGENTS = net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS;
-
-	/**
-	 * The table PUBLIC.CONTACTS
-	 */
-	public static final net.phobot.realestate.model.tables.Contacts CONTACTS = net.phobot.realestate.model.tables.Contacts.CONTACTS;
-
-	/**
 	 * The table PUBLIC.ACTORS_REPRESENTATIVES
 	 */
 	public static final net.phobot.realestate.model.tables.ActorsRepresentatives ACTORS_REPRESENTATIVES = net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES;
-
-	/**
-	 * The table PUBLIC.REPRESENTATIVES
-	 */
-	public static final net.phobot.realestate.model.tables.Representatives REPRESENTATIVES = net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES;
-
-	/**
-	 * The table PUBLIC.ORGANIZATIONS
-	 */
-	public static final net.phobot.realestate.model.tables.Organizations ORGANIZATIONS = net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS;
-
-	/**
-	 * The table PUBLIC.INDIVIDUALS
-	 */
-	public static final net.phobot.realestate.model.tables.Individuals INDIVIDUALS = net.phobot.realestate.model.tables.Individuals.INDIVIDUALS;
-
-	/**
-	 * The table PUBLIC.PURCHASES
-	 */
-	public static final net.phobot.realestate.model.tables.Purchases PURCHASES = net.phobot.realestate.model.tables.Purchases.PURCHASES;
-
-	/**
-	 * The table PUBLIC.DOCUMENT_TYPES
-	 */
-	public static final net.phobot.realestate.model.tables.DocumentTypes DOCUMENT_TYPES = net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES;
 
 	/**
 	 * The table PUBLIC.ATTORNEYS
@@ -64,9 +29,19 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Attorneys ATTORNEYS = net.phobot.realestate.model.tables.Attorneys.ATTORNEYS;
 
 	/**
-	 * The table PUBLIC.TITLE_COMPANIES
+	 * The table PUBLIC.CERTIFIED_CHECKS
 	 */
-	public static final net.phobot.realestate.model.tables.TitleCompanies TITLE_COMPANIES = net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES;
+	public static final net.phobot.realestate.model.tables.CertifiedChecks CERTIFIED_CHECKS = net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS;
+
+	/**
+	 * The table PUBLIC.PAYMENT_TYPES
+	 */
+	public static final net.phobot.realestate.model.tables.PaymentTypes PAYMENT_TYPES = net.phobot.realestate.model.tables.PaymentTypes.PAYMENT_TYPES;
+
+	/**
+	 * The table PUBLIC.CONTACTS
+	 */
+	public static final net.phobot.realestate.model.tables.Contacts CONTACTS = net.phobot.realestate.model.tables.Contacts.CONTACTS;
 
 	/**
 	 * The table PUBLIC.DOCUMENTS
@@ -74,12 +49,42 @@ public class Tables {
 	public static final net.phobot.realestate.model.tables.Documents DOCUMENTS = net.phobot.realestate.model.tables.Documents.DOCUMENTS;
 
 	/**
+	 * The table PUBLIC.DOCUMENT_TYPES
+	 */
+	public static final net.phobot.realestate.model.tables.DocumentTypes DOCUMENT_TYPES = net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES;
+
+	/**
+	 * The table PUBLIC.INDIVIDUALS
+	 */
+	public static final net.phobot.realestate.model.tables.Individuals INDIVIDUALS = net.phobot.realestate.model.tables.Individuals.INDIVIDUALS;
+
+	/**
+	 * The table PUBLIC.ORGANIZATIONS
+	 */
+	public static final net.phobot.realestate.model.tables.Organizations ORGANIZATIONS = net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS;
+
+	/**
+	 * The table PUBLIC.PURCHASES
+	 */
+	public static final net.phobot.realestate.model.tables.Purchases PURCHASES = net.phobot.realestate.model.tables.Purchases.PURCHASES;
+
+	/**
+	 * The table PUBLIC.REAL_ESTATE_AGENTS
+	 */
+	public static final net.phobot.realestate.model.tables.RealEstateAgents REAL_ESTATE_AGENTS = net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS;
+
+	/**
+	 * The table PUBLIC.REPRESENTATIVES
+	 */
+	public static final net.phobot.realestate.model.tables.Representatives REPRESENTATIVES = net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES;
+
+	/**
 	 * The table PUBLIC.SIGNATURES
 	 */
 	public static final net.phobot.realestate.model.tables.Signatures SIGNATURES = net.phobot.realestate.model.tables.Signatures.SIGNATURES;
 
 	/**
-	 * The table PUBLIC.CERTIFIED_CHECKS
+	 * The table PUBLIC.TITLE_COMPANIES
 	 */
-	public static final net.phobot.realestate.model.tables.CertifiedChecks CERTIFIED_CHECKS = net.phobot.realestate.model.tables.CertifiedChecks.CERTIFIED_CHECKS;
+	public static final net.phobot.realestate.model.tables.TitleCompanies TITLE_COMPANIES = net.phobot.realestate.model.tables.TitleCompanies.TITLE_COMPANIES;
 }
