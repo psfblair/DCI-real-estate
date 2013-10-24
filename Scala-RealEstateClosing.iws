@@ -2,45 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2f2985f-736a-4d66-8a22-461b19e05f83" name="Default" comment="Add">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JOOQ-CodeGen/JOOQ-CodeGen.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/PaymentTypes.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/records/PaymentTypesRecord.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JOOQ-CodeGen/main/resources/jooq-config.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JOOQ-CodeGen/main/resources/reference_data.dml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JOOQ-CodeGen/main/resources/tables.ddl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Sequences.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scala-RealEstateClosing.ids" afterPath="$PROJECT_DIR$/Scala-RealEstateClosing.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Actors.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Actors.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/ActorsRepresentatives.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/ActorsRepresentatives.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Attorneys.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Attorneys.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/BuyersAttorney.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/BuyersAttorney.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/CertifiedChecks.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/CertifiedChecks.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/records/CertifiedChecksRecord.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/records/CertifiedChecksRecord.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingContext.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingContext.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/DocumentTypes.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/DocumentTypes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Documents.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Documents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Individuals.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Individuals.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Keys.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Keys.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Lender.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Lender.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Organizations.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Organizations.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Public.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Public.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Representatives.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Representatives.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scala-RealEstateClosing.iml" afterPath="$PROJECT_DIR$/Scala-RealEstateClosing.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scala-RealEstateClosing.ipr" afterPath="$PROJECT_DIR$/Scala-RealEstateClosing.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scala-RealEstateClosing.iws" afterPath="$PROJECT_DIR$/Scala-RealEstateClosing.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Signatures.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/Signatures.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Tables.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/Tables.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/TitleCompanies.java" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/model/tables/TitleCompanies.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/TitleCompany.scala" afterPath="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/TitleCompany.scala" />
     </list>
     <ignored path="Scala-RealEstateClosing.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382287399922" ignored="false" />
+    <file path="/Dummy.txt" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382377269202" ignored="false" />
     <file path="/fragment.java" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382289570015" ignored="false" />
     <file path="/Repository.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379957432040" ignored="false" />
     <file path="/BuyersRealEstateAgent.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379806278350" ignored="false" />
@@ -53,7 +23,7 @@
     <file path="/SellersAttorney.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379864984422" ignored="false" />
     <file path="/jooq-config.xml" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379649902068" ignored="false" />
     <file path="/a.dummy" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1381240510892" ignored="false" />
-    <file path="/Buyer.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1380421205693" ignored="false" />
+    <file path="/Buyer.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382572525345" ignored="false" />
     <file path="/Seller.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1380420173926" ignored="false" />
     <file path="/ClosingContext.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1380737797811" ignored="false" />
     <file path="/General.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379950114087" ignored="false" />
@@ -69,7 +39,7 @@
     <file path="/RecordIdentifier.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1380170536743" ignored="false" />
     <file path="/RoleConversions.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379815925848" ignored="false" />
     <file path="/RoleKeyConversions.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379815068993" ignored="false" />
-    <file path="/ClosingRepository.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382290056917" ignored="false" />
+    <file path="/ClosingRepository.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1382572407228" ignored="false" />
     <file path="/a.regexp" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379821086235" ignored="false" />
     <file path="/ClosingDocument.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379881939606" ignored="false" />
     <file path="/Signature.scala" changelist="f2f2985f-736a-4d66-8a22-461b19e05f83" time="1379880755168" ignored="false" />
@@ -114,6 +84,7 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -150,7 +121,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -160,25 +130,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ClosingRepository.scala" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ClosingRepository.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="282" column="48" selection-start="16212" selection-end="16212" vertical-scroll-proportion="0.0">
+            <state line="57" column="46" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-5.1101575">
               <folding>
-                <element signature="e#48#72#0" expanded="true" />
-                <marker date="1382290192000" expanded="true" signature="16164:16271" placeholder="..." />
+                <marker date="1382572640000" expanded="true" signature="18428:18535" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CertifiedCheck.scala" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CertifiedCheck.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="157" selection-start="2112" selection-end="2112" vertical-scroll-proportion="0.7296137">
-              <folding>
-                <element signature="e#63#115#0" expanded="true" />
-              </folding>
+            <state line="8" column="16" selection-start="323" selection-end="333" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -195,7 +162,7 @@
       <file leaf-file-name="Seller.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="54" selection-end="54" vertical-scroll-proportion="0.0">
+            <state line="12" column="48" selection-start="636" selection-end="636" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -204,7 +171,7 @@
       <file leaf-file-name="Buyer.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="54" selection-end="54" vertical-scroll-proportion="0.0">
+            <state line="13" column="30" selection-start="665" selection-end="682" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -231,7 +198,7 @@
       <file leaf-file-name="LendersRepresentative.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
+            <state line="16" column="0" selection-start="691" selection-end="691" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -261,16 +228,16 @@
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/BuyersAttorney.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/TitleCompany.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/documents/CertificateOfInspection.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Lender.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingContext.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/reference_data.dml" />
         <option value="db-console:/Scala-RealEstateClosingc991c1a/f5f8ed30-9352-4ca3-97c1-c7ab3aaee8bf/" />
         <option value="$PROJECT_DIR$/src/main/resources/tables.ddl" />
-        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala" />
       </list>
     </option>
   </component>
@@ -464,12 +431,12 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -708,6 +675,13 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/SellersRealEstateAgent.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="22" selection-start="54" selection-end="107" vertical-scroll-proportion="0.063424945" />
@@ -723,30 +697,9 @@
         <state line="220" column="6" selection-start="7920" selection-end="7920" vertical-scroll-proportion="0.7844828" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Lender.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="0" selection-start="223" selection-end="223" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="54" selection-end="54" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="54" selection-end="54" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -782,26 +735,42 @@
     </entry>
     <entry file="jar://$USER_HOME_GRADLE$/caches/artifacts-26/filestore/org.scala-lang/scala-library/2.10.2/source/755d154c5257d17ab9071ecdd1bfbee709ddc8e5/scala-library-2.10.2-sources.jar!/scala/Enumeration.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="41" selection-start="4801" selection-end="4829" vertical-scroll-proportion="0.59477127">
+        <state line="131" column="41" selection-start="4801" selection-end="4829" vertical-scroll-proportion="0.59477127" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="16" selection-start="323" selection-end="333" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Buyer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="30" selection-start="665" selection-end="682" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/Seller.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="48" selection-start="636" selection-end="636" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/LendersRepresentative.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="691" selection-end="691" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/ClosingRepository.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="282" column="48" selection-start="16212" selection-end="16212" vertical-scroll-proportion="0.0">
+        <state line="57" column="46" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-5.1101575">
           <folding>
-            <element signature="e#48#72#0" expanded="true" />
-            <marker date="1382290192000" expanded="true" signature="16164:16271" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/net/phobot/realestate/contexts/closing/roles/payments/CertifiedCheck.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="157" selection-start="2112" selection-end="2112" vertical-scroll-proportion="0.7296137">
-          <folding>
-            <element signature="e#63#115#0" expanded="true" />
+            <marker date="1382572640000" expanded="true" signature="18428:18535" placeholder="..." />
           </folding>
         </state>
       </provider>

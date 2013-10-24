@@ -25,10 +25,40 @@ import net.phobot.realestate.dataaccess._
 import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.contexts.closing.roles.documents._
 import net.phobot.realestate.contexts.closing.roles.payments._
+import net.phobot.realestate.contexts.closing.roles.payments.PaymentType
 import net.phobot.realestate.contexts.closing.roles.attributes.{Name => NameAttribute, _}
 
 import ClosingRoleKeyConversions._
 import java.math
+import net.phobot.realestate.contexts.closing.roles.LendersRepresentativeKey
+import net.phobot.realestate.contexts.closing.roles.attributes.IndividualName
+import net.phobot.realestate.contexts.closing.roles.LenderKey
+import net.phobot.realestate.contexts.closing.roles.attributes.OrganizationName
+import net.phobot.realestate.contexts.closing.roles.ClosingAgentKey
+import net.phobot.realestate.contexts.closing.roles.documents.PromissoryNote
+import net.phobot.realestate.contexts.closing.roles.documents.Mortgage
+import net.phobot.realestate.contexts.closing.roles.documents.CertificateOfInspection
+import net.phobot.realestate.contexts.closing.roles.payments.CertifiedCheckKey
+import net.phobot.realestate.contexts.closing.roles.BuyersRealEstateAgentKey
+import net.phobot.realestate.contexts.closing.roles.BuyerKey
+import net.phobot.realestate.dataaccess.JOOQRecordIdentifier
+import net.phobot.realestate.contexts.closing.roles.documents.MortgageKey
+import net.phobot.realestate.contexts.closing.roles.documents.CertificateOfInsurance
+import net.phobot.realestate.contexts.closing.roles.BuyersAttorneyKey
+import net.phobot.realestate.contexts.closing.roles.documents.ClosingStatement
+import net.phobot.realestate.contexts.closing.roles.SellerKey
+import net.phobot.realestate.contexts.closing.roles.SellersRealEstateAgentKey
+import net.phobot.realestate.contexts.closing.roles.documents.ClosingStatementKey
+import net.phobot.realestate.contexts.closing.roles.attributes.MoneyImpl
+import net.phobot.realestate.contexts.closing.roles.TitleCompanyKey
+import net.phobot.realestate.contexts.closing.roles.documents.TitleDeedKey
+import net.phobot.realestate.contexts.closing.roles.documents.ContractOfSale
+import net.phobot.realestate.contexts.closing.roles.SellersAttorneyKey
+import net.phobot.realestate.contexts.closing.roles.documents.PromissoryNoteKey
+import net.phobot.realestate.contexts.closing.roles.documents.TitleDeed
+import net.phobot.realestate.contexts.closing.roles.documents.ContractOfSaleKey
+import net.phobot.realestate.contexts.closing.roles.documents.CertificateOfInsuranceKey
+import net.phobot.realestate.contexts.closing.roles.documents.CertificateOfInspectionKey
 
 object ClosingRoleConversions {
   implicit def buyerAsOption(buyer: Buyer): Option[Buyer] = Option(buyer)
@@ -266,7 +296,7 @@ object ClosingRepository extends JOOQRepository {
   private def findChecksCarriedBy[PossessorRoleKeyType <: RoleKey[java.lang.Long]]
                     (roleKey: PossessorRoleKeyType,
                      purchaseKey: PurchaseKey)
-                    (implicit actorKeyObj: ActorKey[PossessorRoleKeyType, _]): Map[String, CertifiedCheck] = {
+                    (implicit actorKeyObj: ActorKey[PossessorRoleKeyType, _]): Map[PaymentType.Value, CertifiedCheck] = {
 
     implicit def nullableAmountAsMoneyOption(attribute: AttributeWithOptionalValue[math.BigDecimal, Option[math.BigDecimal]]): Option[Money] = {
       attribute.convertToOptionalAttributeValue map (x => MoneyImpl(x))
@@ -297,10 +327,14 @@ object ClosingRepository extends JOOQRepository {
                               and CERTIFIED_CHECKS.IN_POSSESSION_OF === ACTORS.ACTOR_ID
                               and ACTORS.ACTOR_ID === roleKey.id
                               fetch).iterator().asScala
-//      results foldLeft Map[String, CertifiedCheck]() ((theMap: Map[String, CertifiedCheck], theRecord: Record4[Long, BigDecimal, Long, Long]) => {
-//        theMap + ("foo" -> createCheck(theRecord))
-//      })
-      Map()
+
+      def addCheckToMap(theMap: Map[PaymentType.Value, CertifiedCheck], theRecord: Record5[java.lang.Long, java.math.BigDecimal, java.lang.Long, java.lang.Long, java.lang.String]): Map[PaymentType.Value, CertifiedCheck] = {
+        val check: CertifiedCheck = createCheck(theRecord)
+        theMap + (check.paymentFor -> check)
+      }
+
+      val emptyMap = Map[PaymentType.Value, CertifiedCheck]()
+      results.foldLeft(emptyMap) (addCheckToMap)
     } catch { case e: Throwable => Map() }
   }
 }
