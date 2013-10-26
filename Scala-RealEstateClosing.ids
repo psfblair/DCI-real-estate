@@ -388,7 +388,7 @@
     </table>
     <table name="PAYMENT_TYPES" schema="PUBLIC" catalog="TEST" type="TABLE">
       <column name="ID" sqlType="BIGINT" length="19" precision="0" nullable="false" jdbcType="-5"/>
-      <column name="PAYMENT_TYPE" sqlType="VARCHAR" length="2147483647" precision="0" nullable="false" jdbcType="12"/>
+      <column name="PAYMENT_TYPE" sqlType="VARCHAR" length="32" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="CONSTRAINT_5" columns="ID"/>
       <exported-key name="CONSTRAINT_1499" table="CERTIFIED_CHECKS" schema="PUBLIC" catalog="TEST" columns="PAYMENT_FOR"/>
     </table>

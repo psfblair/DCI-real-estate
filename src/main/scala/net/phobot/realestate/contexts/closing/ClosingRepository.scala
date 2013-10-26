@@ -6,21 +6,6 @@ import scala.collection.mutable.{Set => MutableSet}
 import scala.language.implicitConversions
 import scala.language.postfixOps
 
-import org.jooq._
-import org.jooq.scala.Conversions._
-
-import net.phobot.realestate.model.tables.Actors.ACTORS
-import net.phobot.realestate.model.tables.Individuals.INDIVIDUALS
-import net.phobot.realestate.model.tables.Organizations.ORGANIZATIONS
-import net.phobot.realestate.model.tables.Attorneys.ATTORNEYS
-import net.phobot.realestate.model.tables.ActorsRepresentatives.ACTORS_REPRESENTATIVES
-import net.phobot.realestate.model.tables.Representatives.REPRESENTATIVES
-import net.phobot.realestate.model.tables.RealEstateAgents.REAL_ESTATE_AGENTS
-import net.phobot.realestate.model.tables.Documents.DOCUMENTS
-import net.phobot.realestate.model.tables.DocumentTypes.DOCUMENT_TYPES
-import net.phobot.realestate.model.tables.CertifiedChecks._
-import net.phobot.realestate.model.tables.PaymentTypes.PAYMENT_TYPES
-
 import net.phobot.realestate.dataaccess._
 import net.phobot.realestate.contexts.closing.roles._
 import net.phobot.realestate.contexts.closing.roles.documents._

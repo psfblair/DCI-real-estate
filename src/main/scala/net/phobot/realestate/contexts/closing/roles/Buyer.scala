@@ -4,7 +4,6 @@ import net.phobot.realestate.contexts.closing.roles.attributes._
 import net.phobot.realestate.dataaccess.RoleKey
 import net.phobot.realestate.contexts.closing.roles.documents.ClosingDocument
 import net.phobot.realestate.contexts.closing.roles.payments.{PaymentType, CertifiedCheck}
-import net.phobot.realestate.model.tables.PaymentTypes
 
 class Buyer(val key: BuyerKey,
                 name: Name,
